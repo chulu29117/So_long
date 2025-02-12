@@ -6,82 +6,74 @@
 #    By: clu <clu@student.hive.fi>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/11 22:37:50 by clu               #+#    #+#              #
-#    Updated: 2025/02/11 23:27:27 by clu              ###   ########.fr        #
+#    Updated: 2025/02/12 16:51:45 by clu              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Program Name
 NAME = so_long
 
-# Compiler and Flags
-CC = cc
-CFLAGS = -Wall -Wextra -Werror
-# MLX42 requires linking against glfw and macOS frameworks:
-MLX_FLAGS = -lglfw -ldl -lpthread -lX11 -lXrandr -lXinerama -lXcursor -lGL
-
-# Include Directories:
-# Combine your project-specific headers with those from GLFW and Libft.
-INCLUDES = -Iincludes -I$(LIBFT_DIR) -I$(shell brew --prefix glfw)/include
+# Comiler and Flags
+CC 		= cc
+CFLAGS 	= -Wall -Werror -Wextra
 
 # Directories
-SRC_DIR 	= srcs
+SRC_DIR 	= src
 OBJ_DIR 	= obj
 LIBFT_DIR 	= libft
-MLX42_DIR 	= ./MLX42/build
+MLX42_DIR	= MLX42
+GLFW_DIR 	:= $(MLX42_DIR)/build/_deps/glfw-build/src
 
 # Libraries
-LIBFT = $(LIBFT_DIR)/libft.a
-MLX42 = $(MLX42_DIR)/libmlx42.a
-INCLUDES += -I./MLX42/include/MLX42
-
-# GLFW (installed via brew)
-GLFW_PATH = $(shell brew --prefix glfw)
-LD_FLAGS = -L$(GLFW_PATH)/lib
-
-# MLX42
-MLX42_DIR = ./MLX42/build
-MLX42 = ${MLX42_DIR}/libmlx42.a
+LIBFT	:= $(LIBFT_DIR)/libft.a
+MLX42	:= $(MLX42_DIR)/build/libmlx42.a
+GLFW	:= $(GLFW_DIR)/libglfw3.a
+LIBS	:= $(LIBFT) $(MLX42) $(GLFW) -lX11 -lXrandr -lXinerama -lXcursor \
+		-lXi -ldl -pthread -lm
 
 # Source files
-SRCS = so_long.c \
+SRC =	so_long.c \
 
-# Source files: all .c files in SRC_DIR
-SRCS = $(wildcard $(SRC_DIR)/*.c)
-# Object files go into OBJ_DIR, preserving the same filename
-OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+HEADERS = -Iincludes -I$(MLX42_DIR)/include/MLX42 -I$(LIBFT_DIR)
+SRC 	:= $(addprefix $(SRC_DIR)/, $(SRC))
+OBJ 	= $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT) $(MLX42)
-	@echo "Creating executable $(NAME)..."
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(MLX42) $(MLX_FLAGS) $(LD_FLAGS) -o $(NAME)
+$(NAME): $(OBJ) $(LIBFT) $(MLX42)
+	@echo "Building executable $(NAME) ..."
+	$(CC) $(CFLAGS) $(OBJ) $(LIBS) -o $(NAME)
+	@echo "Done"
 
-# Compile source files into objects.
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	@echo "Compiling $<..."
+	$(CC) $(CFLAGS) $(HEADERS) -c $< -o $@
 
 $(LIBFT):
 	@echo "Compiling Libft..."
 	@make -C $(LIBFT_DIR)
+	@echo "Done"
 
-# Build MLX42 if it does not exist.
 $(MLX42):
-	@if [ ! -f "$(MLX42)" ]; then \
-		echo "Building MLX42..."; \
-		cd MLX42 && cmake -B build && cmake --build build -j4; \
-	fi
+	@echo "Building MLX42..."
+	@cmake -B $(MLX42_DIR)/build $(MLX42_DIR)
+	@cmake --build $(MLX42_DIR)/build -j4
+	@echo "MLX42 build complete."
 
 clean:
-	@echo "Cleaning object files..."
-	rm -rf $(OBJ_DIR)
-	@make clean -C $(LIBFT_DIR)
+	@make -C $(LIBFT_DIR) clean
+	@rm -rf $(OBJ_DIR)
+	@rm -rf $(MLX42_DIR)/build
+	@echo "Cleaned up all object files"
 
 fclean: clean
-	@echo "Removing executable $(NAME)..."
-	rm -f $(NAME)
-	@make fclean -C $(LIBFT_DIR)
+	@make -C $(LIBFT_DIR) fclean
+	@rm -f $(NAME)
+	@echo "Cleaned up $(NAME)"
+	@echo "Cleaned up everything"
 
 re: fclean all
+	@echo "Remade everything"
 
 .PHONY: all clean fclean re
