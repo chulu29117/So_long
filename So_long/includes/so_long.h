@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 23:19:51 by clu               #+#    #+#             */
-/*   Updated: 2025/02/14 21:12:29 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/14 23:06:30 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@
 # include <memory.h>
 # include <time.h>
 # include <stdbool.h>
-
-# define PIXELS 64
 
 typedef struct s_map
 {
@@ -45,11 +43,12 @@ typedef struct s_game
 	mlx_t		*mlx;
 	t_map		map;
 	t_player	player;
-	void		*img_wall;
-	void		*img_collectible;
-	void		*img_floor;
-	void		*img_player;
-	void		*img_exit;
+	mlx_image_t	*img_wall;
+	mlx_image_t	*img_collectible;
+	mlx_image_t	*img_floor;
+	mlx_image_t	*img_player;
+	mlx_image_t	*img_exit;
+	int			move_count;
 }	t_game;
 
 // Parsing map
@@ -66,7 +65,7 @@ void	load_textures(t_game *game);
 
 // Movements and events
 void	move_player(t_game *game, int dx, int dy);
-void	key_handler(mlx_key_data_t keydata, void *param);
+void	hook(void *param);
 
 // Error
 void	exit_error(const char *msg);

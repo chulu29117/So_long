@@ -6,32 +6,38 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 22:39:27 by clu               #+#    #+#             */
-/*   Updated: 2025/02/14 21:14:18 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/14 22:30:06 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void	key_handler(mlx_key_data_t keydata, void *param)
+static char	*get_map_path(char *arg)
 {
-	mlx_t	*mlx;
+	char	*path;
 
-	mlx = (mlx_t *)param;
-	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_RELEASE)
-		mlx_close_window(mlx);
+	/* If there's no '/' in the argument, assume it's in the maps/ directory */
+	if (!ft_strchr(arg, '/'))
+		path = ft_strjoin("maps/", arg);
+	else
+		path = ft_strdup(arg);
+	return (path);
 }
 
 int	main(int argc, char **argv)
 {
 	t_game	game;
+	char	*map_path;
 
 	if (argc != 2)
 	{
 		ft_printf("Usage: %s <map.ber>\n", argv[0]);
 		return (EXIT_FAILURE);	
 	}
+	map_path = get_map_path(argv[1]);
 	/*Parsing the map file*/
-	parse_map(argv[1], &game);
+	parse_map(map_path, &game);
+	free(map_path);
 	/*Validate the map (checking dimensions, elements)*/
 	if (!validate_map(&game.map))
 	{
@@ -51,7 +57,7 @@ int	main(int argc, char **argv)
 	/*Render the initial map*/
 	render_map(&game);
 	/*Set up key event handling*/
-	mlx_key_data(game.mlx, key_handler, &game);
+	mlx_loop_hook(game.mlx, hook, &game);
 	/*Start the MLX42 event loop*/
 	mlx_loop(game.mlx);
 	/*Clean up after loop ends*/
