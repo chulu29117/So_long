@@ -6,7 +6,7 @@
 #    By: clu <clu@student.hive.fi>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/11 22:37:50 by clu               #+#    #+#              #
-#    Updated: 2025/02/12 16:51:45 by clu              ###   ########.fr        #
+#    Updated: 2025/02/14 21:12:01 by clu              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,20 +22,20 @@ SRC_DIR 	= src
 OBJ_DIR 	= obj
 LIBFT_DIR 	= libft
 MLX42_DIR	= MLX42
-GLFW_DIR 	:= $(MLX42_DIR)/build/_deps/glfw-build/src
+# GLFW_DIR 	:= $(MLX42_DIR)/build/_deps/glfw-build/src
 
 # Libraries
 LIBFT	:= $(LIBFT_DIR)/libft.a
 MLX42	:= $(MLX42_DIR)/build/libmlx42.a
-GLFW	:= $(GLFW_DIR)/libglfw3.a
-LIBS	:= $(LIBFT) $(MLX42) $(GLFW) -lX11 -lXrandr -lXinerama -lXcursor \
-		-lXi -ldl -pthread -lm
+# GLFW	:= $(GLFW_DIR)/libglfw3.a
+LIBS	:= $(LIBFT) $(MLX42) -lX11 -lXrandr -lXinerama -lXcursor \
+		-lglfw -lXi -ldl -pthread -lm
 
-# Source files
-SRC =	so_long.c \
-
+# Include directories
 HEADERS = -Iincludes -I$(MLX42_DIR)/include/MLX42 -I$(LIBFT_DIR)
-SRC 	:= $(addprefix $(SRC_DIR)/, $(SRC))
+
+# Source files and object files
+SRC 	= $(shell find $(SRC_DIR) -type f -name "*.c")
 OBJ 	= $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 all: $(NAME)
@@ -46,10 +46,10 @@ $(NAME): $(OBJ) $(LIBFT) $(MLX42)
 	@echo "Done"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	@mkdir -p $(OBJ_DIR)
+	@mkdir -p $(dir $@)
 	@echo "Compiling $<..."
 	$(CC) $(CFLAGS) $(HEADERS) -c $< -o $@
-
+	
 $(LIBFT):
 	@echo "Compiling Libft..."
 	@make -C $(LIBFT_DIR)
