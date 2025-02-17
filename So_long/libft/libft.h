@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 15:03:13 by clu               #+#    #+#             */
-/*   Updated: 2025/02/11 17:11:29 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/17 14:36:43 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 // Get_next_line buffer size
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 32
+#  define BUFFER_SIZE 1024
 # endif
 
 # define MAX_FD 1024

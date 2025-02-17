@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 23:19:51 by clu               #+#    #+#             */
-/*   Updated: 2025/02/17 13:58:45 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/17 17:02:42 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@
 # include <time.h>
 
 /* Window dimensions and tile definitions */
-# define HEIGHT	600
-# define WIDTH 800
 # define TILE_SIZE 64
 # define MOVE 64
 # define WALL '1'
@@ -63,7 +61,6 @@ typedef struct s_images
 	mlx_image_t	*exit;
 }	t_images;
 
-// 
 typedef struct s_game
 {
 	mlx_t		*mlx;
@@ -77,8 +74,8 @@ typedef struct s_game
 	int			map_width;
 }	t_game;
 
-
 // Parsing map
+void	size_map(t_game *game, char **map);
 void	parse_map(char *file, t_game *game);
 int		validate_map(t_game *game);
 void	set_player_start(t_game *game);

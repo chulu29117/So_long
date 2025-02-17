@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 22:39:27 by clu               #+#    #+#             */
-/*   Updated: 2025/02/17 14:02:31 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/17 17:11:32 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,36 @@ static char	*get_map_path(char *arg)
 {
 	char	*path;
 
-	/* If there's no '/' in the argument, assume it's in the maps/ directory */
 	if (!ft_strchr(arg, '/'))
 		path = ft_strjoin("maps/", arg);
 	else
 		path = ft_strdup(arg);
 	return (path);
+}
+
+static int	init_game(t_game *game)
+{
+	game->move_count = 0;
+	game->mlx = mlx_init(game->map_width, game->map_height, "so_long", false);
+	if (!game->mlx)
+	{
+		free_map(game->map);
+		return (false);
+	}
+	get_textures(game);
+	get_images(game);
+	draw_map(game, game->img);
+	game->player_instance = mlx_image_to_window(game->mlx, game->img->player,
+		game->player.x * TILE_SIZE, game->player.y * TILE_SIZE);
+	ft_printf("Player instance at (%d, %d) with id %d\n",
+		game->player.x * TILE_SIZE, game->player.y * TILE_SIZE, game->player_instance);
+	mlx_key_hook(game->mlx, keyhook, game);
+	mlx_loop(game->mlx);
+	mlx_terminate(game->mlx);
+	free_map(game->map);
+	free(game->img);
+	free(game->tex);
+	return (true);
 }
 
 int	main(int argc, char **argv)
@@ -35,38 +59,20 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);	
 	}
 	map_path = get_map_path(argv[1]);
-	/*Parsing the map file*/
 	parse_map(map_path, &game);
 	free(map_path);
-	/*Validate the map (checking dimensions, elements)*/
 	if (!validate_map(&game))
 	{
 		ft_printf("Error\nInvalid map\n");
 		free_map(game.map);
 		return (EXIT_FAILURE);
 	}
+	size_map(&game, game.map);
 	set_player_start(&game);
-	/*Initialize MLX42 and make game window*/
-	game.mlx = mlx_init(WIDTH, HEIGHT, "so_long", true);
-	if (!game.mlx)
+	if (!init_game(&game))
 	{
-		free_map(game.map);
+		ft_printf("Error\nFailed to initialize game\n");
 		return (EXIT_FAILURE);
 	}
-	/*Load textures for walls, collectibles, exit, floor, and player*/
-	get_textures(&game);
-	get_images(&game);
-	draw_map(&game, game.img);
-	/*Render the initial map*/
-	render_map(&game);
-	/*Set up key event handling*/
-	mlx_key_hook(game.mlx, keyhook, &game);
-	/*Start the MLX42 event loop*/
-	mlx_loop(game.mlx);
-	/*Clean up after loop ends*/	
-	mlx_terminate(game.mlx);
-	free_map(game.map);
-	free(game.img);
-	free(game.tex);
 	return (EXIT_SUCCESS);
 }

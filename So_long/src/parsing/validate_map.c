@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:32:18 by clu               #+#    #+#             */
-/*   Updated: 2025/02/17 13:54:05 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/17 15:31:20 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,18 @@ static int	check_rectangle(t_game *game)
 	size_t	len;
 
 	if (!game->map)
-		return (FALSE);
+		return (false);
 	if (!game->map[0])
-		return (FALSE);
+		return (false);
 	len = ft_strlen(game->map[0]);
 	i = 0;
 	while (game->map[i])
 	{
 		if (ft_strlen(game->map[i]) != len)
-			return (FALSE);
+			return (false);
 		i++;
 	}
-	return (TRUE);
+	return (true);
 }
 
 // Ensure that the first and last rows consist of 1s
@@ -42,7 +42,7 @@ static int	check_walls(t_game *game)
 	int	height;
 
 	if (!game->map)
-		return (FALSE);
+		return (false);
 	height = 0;
 	while (game->map[height])
 		height++;
@@ -51,7 +51,7 @@ static int	check_walls(t_game *game)
 	while (game->map[0][i])
 	{
 		if (game->map[0][i] != WALL)
-			return (FALSE);
+			return (false);
 		i++;
 	}
 	/* Check bottom row */
@@ -59,7 +59,7 @@ static int	check_walls(t_game *game)
 	while (game->map[height - 1][i])
 	{
 		if (game->map[height - 1][i] != WALL)
-			return (FALSE);
+			return (false);
 		i++;
 	}
 	/* Check left and right borders */
@@ -68,10 +68,10 @@ static int	check_walls(t_game *game)
 	{
 		if (game->map[j][0] != WALL ||
 			game->map[j][ft_strlen(game->map[j]) - 1] != WALL)
-			return (FALSE);
+			return (false);
 		j++;
 	}
-	return (TRUE);
+	return (true);
 }
 
 // Count the occurrences of the player (P), exit (E), and collectible (C).
@@ -104,8 +104,8 @@ static int	check_elements(t_game *game)
 		i++;
 	}
 	if (count_player != 1 || count_exit != 1 || count_collect < 1)
-		return (FALSE);
-	return (TRUE);
+		return (false);
+	return (true);
 }
 
 // Checks the map for rectangularity, proper wall borders, and required elements. 

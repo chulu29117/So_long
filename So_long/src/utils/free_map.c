@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:21:37 by clu               #+#    #+#             */
-/*   Updated: 2025/02/17 13:49:13 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/17 15:39:24 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	free_map(char **map)
 	if (!map)
 		return ;
 	i = 0;
-	while (map[++i])
+	while (map[i++])
 		free(map[i]);
 	free(map);
 }

@@ -6,44 +6,47 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:21:26 by clu               #+#    #+#             */
-/*   Updated: 2025/02/17 14:00:06 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/17 16:50:08 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-static void update_player_position(t_game *game, int new_x, int new_y)
-{
-	if (!game->img->player)
-	{
-		ft_printf("Error: img_player->instances is NULL\n");
-		return;
-	}
-	ft_printf("Updating player instance to (%d, %d)\n", new_x * 64, new_y * 64);
-	mlx_delete_image(game->mlx, game->img->player);
-	game->img->player = mlx_texture_to_image(game->mlx, game->tex->player);
-	game->player_instance = mlx_image_to_window(game->mlx, game->img->player, 
-		new_x * TILE_SIZE, new_y * TILE_SIZE);
-}
-
 void	move_player(t_game *game, int dx, int dy)
 {
-	int	new_x;
-	int	new_y;
+	int	new_tile_x;
+	int	new_tile_y;
+	int	max_tiles_x;
+	int	max_tiles_y;
+	int	row;
 
-	/* Calculate new player position */
-	new_x = game->player.x + dx;
-	new_y = game->player.y + dy;
-	/* Check boundaries and wall collisions */
-	if (new_x < 0 || new_x >= game->map_width || 
-		new_y < 0 || new_y >= game->map_height)
+	// Calculate new position in tile coordinates.
+	new_tile_x = game->player.x + dx;
+	new_tile_y = game->player.y + dy;
+	// Compute maximum tiles in x and y.
+	max_tiles_x = ft_strlen(game->map[0]);
+	max_tiles_y = 0;
+	row = 0;
+	while (game->map[row])
+	{
+		max_tiles_y++;
+		row++;
+	}
+	// Check boundaries in terms of tile counts.
+	if (new_tile_x < 0 || new_tile_x >= max_tiles_x ||
+		new_tile_y < 0 || new_tile_y >= max_tiles_y)
 		return ;
-	if (game->map[new_y][new_x] == '1')
+	
+	// Check for wall collision (assuming '1' represents a wall).
+	if (game->map[new_tile_y][new_tile_x] == '1')
 		return ;
-	/* Update player position and move count */	
-	game->player.x = new_x;
-	game->player.y = new_y;
+	// Update player's logical position and move count.
+	game->player.x = new_tile_x;
+	game->player.y = new_tile_y;
 	game->move_count++;
-	ft_printf("Moves: %d\n", game->move_count);
-    update_player_position(game, new_x, new_y);
+	ft_printf("MOVES: %i\n", game->move_count);
+	// Update the player's image instance's position in pixels.
+	game->img->player->instances[game->player_instance].x = new_tile_x * TILE_SIZE;
+	game->img->player->instances[game->player_instance].y = new_tile_y * TILE_SIZE;
 }
+

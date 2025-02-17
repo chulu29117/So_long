@@ -6,11 +6,22 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:21:13 by clu               #+#    #+#             */
-/*   Updated: 2025/02/17 13:58:57 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/17 17:03:53 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
+
+void	size_map(t_game *game, char **map)
+{
+	int	i;
+
+	i = 0;
+	while (map[i])
+		i++;
+	game->map_width = ft_strlen(map[0]) * TILE_SIZE;
+	game->map_height = i * TILE_SIZE;
+}
 
 /*
 ** read_file:
@@ -73,6 +84,8 @@ void	set_player_start(t_game *game)
 	int	row;
 	int	col;
 
+	if (!game->map)
+		exit_error("Error:\nNo map found\n");
 	row = 0;
 	while (game->map[row])
 	{
