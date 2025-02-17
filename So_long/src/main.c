@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 22:39:27 by clu               #+#    #+#             */
-/*   Updated: 2025/02/17 17:11:32 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/17 17:59:19 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static char	*get_map_path(char *arg)
 static int	init_game(t_game *game)
 {
 	game->move_count = 0;
-	game->mlx = mlx_init(game->map_width, game->map_height, "so_long", false);
+	game->mlx = mlx_init(game->map_width, game->map_height, "so_long", true);
 	if (!game->mlx)
 	{
 		free_map(game->map);

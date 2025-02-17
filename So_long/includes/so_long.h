@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 23:19:51 by clu               #+#    #+#             */
-/*   Updated: 2025/02/17 17:02:42 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/17 17:41:44 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <fcntl.h>
 # include <memory.h>
 # include <time.h>
+# include <stdio.h>
 
 /* Window dimensions and tile definitions */
 # define TILE_SIZE 64
