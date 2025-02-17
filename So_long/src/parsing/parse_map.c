@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:21:13 by clu               #+#    #+#             */
-/*   Updated: 2025/02/14 20:47:28 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/17 13:58:57 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,18 +47,47 @@ static char	*read_file(char *file)
 void	parse_map(char *file, t_game *game)
 {
 	char	*file_content;
+	int		height;
+	int		width;
 
 	file_content = read_file(file);
+	ft_printf("File content read:\n%s\n", file_content);
 	if (!file_content || !file_content[0])
 		exit_error("Empty map file");
-	game->map.grid = ft_split(file_content, '\n');
+	game->map = ft_split(file_content, '\n');
 	free(file_content);
-	game->map.height = 0;
-	while (game->map.grid[game->map.height])
-		game->map.height++;
-	if (game->map.height > 0)
-		game->map.width = ft_strlen(game->map.grid[0]);
+	height = 0;
+	while (game->map[height])
+		height++;
+	if (height > 0)
+		width = ft_strlen(game->map[0]);
 	else
-		game->map.width = 0;
+		width = 0;
+	game->map_height = height;
+	game->map_width = width;
+	ft_printf("Map dimensions: %d x %d\n", width, height);
 }
 
+void	set_player_start(t_game *game)
+{
+	int	row;
+	int	col;
+
+	row = 0;
+	while (game->map[row])
+	{
+		col = 0;
+		while (game->map[row][col])
+		{
+			if (game->map[row][col] == 'P')
+			{
+				game->player.x = col;
+				game->player.y = row;
+				return ;
+			}
+			col++;
+		}
+		row++;
+	}
+	exit_error("No player start ('P') found in map");
+}

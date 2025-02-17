@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:21:37 by clu               #+#    #+#             */
-/*   Updated: 2025/02/14 21:13:42 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/17 13:49:13 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,16 @@
 
 // Free the memory allocated for the map grid
 // Free each row and then the grid pointer
-void	free_map(t_map *map)
+void	free_map(char **map)
 {
 	int	i;
 
-	if (!map || !map->grid)
+	if (!map)
 		return ;
 	i = 0;
-	while (map->grid[i])
-	{
-		free(map->grid[i]);
-		i++;
-	}
-	free(map->grid);
+	while (map[++i])
+		free(map[i]);
+	free(map);
 }
 
 // Free all dynamically allocated resources in the game
@@ -34,5 +31,5 @@ void	free_game(t_game *game)
 {
 	if (!game)
 		return ;
-	free_map(&(game->map));
+	free_map(game->map);
 }

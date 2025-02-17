@@ -6,7 +6,7 @@
 #    By: clu <clu@student.hive.fi>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/11 22:37:50 by clu               #+#    #+#              #
-#    Updated: 2025/02/14 21:12:01 by clu              ###   ########.fr        #
+#    Updated: 2025/02/16 22:21:44 by clu              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME = so_long
 
 # Comiler and Flags
 CC 		= cc
-CFLAGS 	= -Wall -Werror -Wextra
+CFLAGS 	= -Wall -Werror -Wextra -g
 
 # Directories
 SRC_DIR 	= src

@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 22:39:27 by clu               #+#    #+#             */
-/*   Updated: 2025/02/14 22:30:06 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/17 14:02:31 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,29 +39,34 @@ int	main(int argc, char **argv)
 	parse_map(map_path, &game);
 	free(map_path);
 	/*Validate the map (checking dimensions, elements)*/
-	if (!validate_map(&game.map))
+	if (!validate_map(&game))
 	{
 		ft_printf("Error\nInvalid map\n");
-		free_map(&game.map);
+		free_map(game.map);
 		return (EXIT_FAILURE);
 	}
+	set_player_start(&game);
 	/*Initialize MLX42 and make game window*/
-	game.mlx = mlx_init(800, 600, "so_long", true);
+	game.mlx = mlx_init(WIDTH, HEIGHT, "so_long", true);
 	if (!game.mlx)
 	{
-		free_map(&game.map);
+		free_map(game.map);
 		return (EXIT_FAILURE);
 	}
 	/*Load textures for walls, collectibles, exit, floor, and player*/
-	load_textures(&game);
+	get_textures(&game);
+	get_images(&game);
+	draw_map(&game, game.img);
 	/*Render the initial map*/
 	render_map(&game);
 	/*Set up key event handling*/
-	mlx_loop_hook(game.mlx, hook, &game);
+	mlx_key_hook(game.mlx, keyhook, &game);
 	/*Start the MLX42 event loop*/
 	mlx_loop(game.mlx);
-	/*Clean up after loop ends*/
+	/*Clean up after loop ends*/	
 	mlx_terminate(game.mlx);
-	free_map(&game.map);
+	free_map(game.map);
+	free(game.img);
+	free(game.tex);
 	return (EXIT_SUCCESS);
 }
