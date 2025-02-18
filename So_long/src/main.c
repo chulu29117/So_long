@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 22:39:27 by clu               #+#    #+#             */
-/*   Updated: 2025/02/18 15:06:32 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/18 19:23:55 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ static int	init_game(t_game *game)
 	get_textures(game);
 	get_images(game);
 	draw_map(game, game->img);
-	game->player_instance = mlx_image_to_window(game->mlx, game->img->player,
-			game->player.x * TILE_SIZE, game->player.y * TILE_SIZE);
+	mlx_image_to_window(game->mlx, game->img->player,
+		game->player.x * TILE_SIZE, game->player.y * TILE_SIZE);
 	mlx_key_hook(game->mlx, keyhook, game);
 	mlx_loop(game->mlx);
 	mlx_terminate(game->mlx);

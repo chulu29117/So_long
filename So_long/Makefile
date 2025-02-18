@@ -6,7 +6,7 @@
 #    By: clu <clu@student.hive.fi>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/11 22:37:50 by clu               #+#    #+#              #
-#    Updated: 2025/02/18 14:23:14 by clu              ###   ########.fr        #
+#    Updated: 2025/02/18 17:33:09 by clu              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,16 +24,16 @@ LIBFT_DIR 	= ./libft
 MLX_DIR		= ./MLX42
 
 # Libraries
-LIBFT		:= $(LIBFT_DIR)/libft.a
-LIBMLX		:= $(MLX_DIR)/build/libmlx42.a
-LIBS		:= $(LIBFT) $(LIBMLX) -ldl -lglfw -pthread -lm
+LIBFT	:= $(LIBFT_DIR)/libft.a
+LIBMLX	:= $(MLX_DIR)/build/libmlx42.a
+LIBS	:= $(LIBFT) $(LIBMLX) -ldl -lglfw -pthread -lm
 
 # Include directories
-HEADERS = -I./includes -I$(MLX_DIR)/include/MLX42 -I$(LIBFT_DIR)
+HEADERS = -I./includes -I$(LIBFT_DIR) -I$(MLX_DIR)/include/MLX42
 
 # Source files and object files
-SRC 	= $(shell find $(SRC_DIR) -type f -name "*.c")
-OBJ 	= $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+SRC = $(shell find $(SRC_DIR) -type f -name "*.c")
+OBJ = $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 all: $(MLX_DIR) $(LIBFT) $(NAME)
 

@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 15:56:34 by clu               #+#    #+#             */
-/*   Updated: 2025/02/18 16:00:04 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/18 18:40:16 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	check_walls(t_game *game)
 
 // Count the occurrences of the player (P) and exit (E).
 // There must be exactly one P and exactly one E.
-static int	check_player_and_exit(t_game *game, int *count_player, int *count_exit)
+static int	check_p_and_e(t_game *game, int *count_player, int *count_exit)
 {
 	int	i;
 	int	j;
@@ -136,7 +136,7 @@ int	check_elements(t_game *game)
 	count_player = 0;
 	count_exit = 0;
 	count_collect = 0;
-	if (!check_player_and_exit(game, &count_player, &count_exit))
+	if (!check_p_and_e(game, &count_player, &count_exit))
 		return (false);
 	if (!check_collectibles(game, &count_collect))
 		return (false);

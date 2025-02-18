@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:21:26 by clu               #+#    #+#             */
-/*   Updated: 2025/02/18 15:07:27 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/18 19:22:57 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	move_player(t_game *game, int dx, int dy)
 		game->collected++;
 		ft_printf("Pikachu caught: %d, %d to go!\n", game->collected,
 			game->total_collected - game->collected);
-		game->map[new_y][new_x] = COLLECTED;
+		game->map[new_y][new_x] = FLOOR;
 	}
 	if (game->map[new_y][new_x] == EXIT)
 	{
@@ -101,17 +101,15 @@ void	move_player(t_game *game, int dx, int dy)
 			return ;
 		}
 	}
+	mlx_image_to_window(game->mlx, game->img->floor,
+		old_x * TILE_SIZE, old_y * TILE_SIZE);
 	game->player.x = new_x;
 	game->player.y = new_y;
 	game->move_count++;
 	ft_printf("MOVES: %i\n", game->move_count);
-	game->img->player->instances[game->player_instance].x = new_x * TILE_SIZE;
-	game->img->player->instances[game->player_instance].y = new_y * TILE_SIZE;
-	if (game->map[old_y][old_x] == COLLECTED)
-	{
-		game->map[old_y][old_x] = FLOOR;
-		mlx_image_to_window(game->mlx, game->img->floor,
-			old_x * TILE_SIZE, old_y * TILE_SIZE);
-	}
+	mlx_image_to_window(game->mlx, game->img->player,
+		new_x * TILE_SIZE, new_y * TILE_SIZE);
+	// game->img->player->instances[game->player_instance].x = new_x * TILE_SIZE;
+	// game->img->player->instances[game->player_instance].y = new_y * TILE_SIZE;
 	show_move_count(game);
 }

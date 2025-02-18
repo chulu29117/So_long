@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 23:19:51 by clu               #+#    #+#             */
-/*   Updated: 2025/02/18 16:00:11 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/18 19:24:03 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@
 // Player structure stores the player's grid coordinates
 typedef struct s_player
 {
-	int		x;
-	int		y;
+	int	x;
+	int	y;
 }	t_player;
 
 typedef struct	s_textures
@@ -71,7 +71,6 @@ typedef struct s_game
 	t_images	*img;
 	char		**map;
 	int			move_count;
-	int			player_instance;
 	int			map_height;
 	int			map_width;
 	int			collected;
