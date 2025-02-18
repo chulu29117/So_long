@@ -6,7 +6,7 @@
 #    By: clu <clu@student.hive.fi>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/11 22:37:50 by clu               #+#    #+#              #
-#    Updated: 2025/02/18 11:30:07 by clu              ###   ########.fr        #
+#    Updated: 2025/02/18 14:23:14 by clu              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ HEADERS = -I./includes -I$(MLX_DIR)/include/MLX42 -I$(LIBFT_DIR)
 SRC 	= $(shell find $(SRC_DIR) -type f -name "*.c")
 OBJ 	= $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
-all: libmlx $(LIBFT) $(NAME)
+all: $(MLX_DIR) $(LIBFT) $(NAME)
 
 $(NAME): $(OBJ)
 	@echo "Building executable $(NAME) ..."
@@ -55,12 +55,8 @@ $(LIBFT):
 $(MLX_DIR):
 	@echo "Compiling MLX42..."
 	git clone https://github.com/codam-coding-college/MLX42.git $(MLX_DIR)
-	@echo "Done"
-
-libmlx: $(MLX_DIR)
-	@echo "Building MLX42..."
 	@cmake $(MLX_DIR) -B $(MLX_DIR)/build && make -C $(MLX_DIR)/build -j4
-	@echo "MLX42 build complete."
+	@echo "Done"
 
 clean:
 	@make -C $(LIBFT_DIR) clean
@@ -78,4 +74,4 @@ fclean: clean
 re: fclean all
 	@echo "Remade everything"
 
-.PHONY: all clean fclean re libmlx
+.PHONY: all clean fclean re

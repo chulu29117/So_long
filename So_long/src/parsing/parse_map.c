@@ -6,12 +6,15 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:21:13 by clu               #+#    #+#             */
-/*   Updated: 2025/02/17 17:03:53 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/18 14:47:03 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
+/*
+Getting the size of the map by counting the number of rows and columns.
+*/
 void	size_map(t_game *game, char **map)
 {
 	int	i;
@@ -23,10 +26,9 @@ void	size_map(t_game *game, char **map)
 	game->map_height = i * TILE_SIZE;
 }
 
-/*
-** read_file:
-** Reads the entire contents of the file using get_next_line.
-** Returns a dynamically allocated string containing the file's content.
+/* 
+Reads the entire contents of the file using get_next_line.
+Returns a dynamically allocated string containing the file's content.
 */
 static char	*read_file(char *file)
 {
@@ -39,21 +41,22 @@ static char	*read_file(char *file)
 	if (fd < 0)
 		exit_error("Could not open map file");
 	content = ft_strdup("");
-	while ((line = get_next_line(fd)))
+	line = get_next_line(fd);
+	while (line)
 	{
 		temp = content;
 		content = ft_strjoin(temp, line);
 		free(temp);
 		free(line);
+		line = get_next_line(fd);
 	}
 	close(fd);
 	return (content);
 }
 
 /*
-** parse_map:
-** Reads the map from the given file and fills the game->map structure.
-** The map is stored as a NULL-terminated array of strings.
+Reads the map from the given file and fills the game->map structure.
+The map is stored as a NULL-terminated array of strings.
 */
 void	parse_map(char *file, t_game *game)
 {
@@ -79,6 +82,7 @@ void	parse_map(char *file, t_game *game)
 	ft_printf("Map dimensions: %d x %d\n", width, height);
 }
 
+// Set the player's starting position
 void	set_player_start(t_game *game)
 {
 	int	row;

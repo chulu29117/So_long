@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:21:37 by clu               #+#    #+#             */
-/*   Updated: 2025/02/17 15:39:24 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/18 14:59:44 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,11 @@ void	free_map(char **map)
 	if (!map)
 		return ;
 	i = 0;
-	while (map[i++])
+	while (map[i])
+	{
 		free(map[i]);
+		i++;
+	}
 	free(map);
 }
 
@@ -31,5 +34,19 @@ void	free_game(t_game *game)
 {
 	if (!game)
 		return ;
-	free_map(game->map);
+	if (game->map)
+	{
+		free_map(game->map);
+		game->map = NULL;
+	}
+	if (game->img)
+	{
+		free(game->img);
+		game->img = NULL;
+	}
+	if (game->tex)
+	{
+		free(game->tex);
+		game->tex = NULL;
+	}
 }
