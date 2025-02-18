@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 22:39:27 by clu               #+#    #+#             */
-/*   Updated: 2025/02/17 17:59:19 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/18 13:52:31 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,9 @@ int	main(int argc, char **argv)
 	}
 	size_map(&game, game.map);
 	set_player_start(&game);
+	count_collect(&game);
+	ft_printf("Number of Pikachus to catch: %d\n", game.total_collected);
+	game.collected = 0;
 	if (!init_game(&game))
 	{
 		ft_printf("Error\nFailed to initialize game\n");

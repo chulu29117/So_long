@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 23:19:51 by clu               #+#    #+#             */
-/*   Updated: 2025/02/17 17:41:44 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/18 13:39:21 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # define MOVE 64
 # define WALL '1'
 # define COLLECT 'C'
+# define COLLECTED 'X'
 # define PLAYER 'P'
 # define EXIT 'E'
 # define FLOOR '0'
@@ -73,6 +74,8 @@ typedef struct s_game
 	int			player_instance;
 	int			map_height;
 	int			map_width;
+	int			collected;
+	int			total_collected;
 }	t_game;
 
 // Parsing map
@@ -85,19 +88,17 @@ void	set_player_start(t_game *game);
 void	free_map(char **map);
 void	free_game(t_game *game);
 
-// Rendering
-void	render_map(t_game *game);
 // void	load_textures(t_game *game);
 void	get_textures(t_game *game);
 void	get_images(t_game *game);
 void	draw_map(t_game *game, t_images *imag);
 
 // Movements and events
+void	count_collect(t_game *game);
 void	move_player(t_game *game, int dx, int dy);
 void	keyhook(mlx_key_data_t keydata, void *param);
 
 // Error
 void	exit_error(const char *msg);
-int		print_error(const char *msg, int exit_code);
 
 #endif
