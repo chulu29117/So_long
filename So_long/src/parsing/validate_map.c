@@ -6,104 +6,11 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:32:18 by clu               #+#    #+#             */
-/*   Updated: 2025/02/18 14:56:52 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/18 15:56:46 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
-
-// Ensure that every row in the map has the same length.
-static int	check_rectangle(t_game *game)
-{
-	int		i;
-	size_t	len;
-
-	if (!game->map)
-		return (false);
-	if (!game->map[0])
-		return (false);
-	len = ft_strlen(game->map[0]);
-	i = 0;
-	while (game->map[i])
-	{
-		if (ft_strlen(game->map[i]) != len)
-			return (false);
-		i++;
-	}
-	return (true);
-}
-
-// Ensure that the first and last rows consist of 1s
-// First and last characters of each rows are also 1s
-static int	check_walls(t_game *game)
-{
-	int	i;
-	int	j;
-	int	height;
-
-	if (!game->map)
-		return (false);
-	height = 0;
-	while (game->map[height])
-		height++;
-	i = 0;
-	while (game->map[0][i])
-	{
-		if (game->map[0][i] != WALL)
-			return (false);
-		i++;
-	}
-	i = 0;
-	while (game->map[height - 1][i])
-	{
-		if (game->map[height - 1][i] != WALL)
-			return (false);
-		i++;
-	}
-	j = 0;
-	while (j < height)
-	{
-		if (game->map[j][0] != WALL ||
-			game->map[j][ft_strlen(game->map[j]) - 1] != WALL)
-			return (false);
-		j++;
-	}
-	return (true);
-}
-
-// Count the occurrences of the player (P), exit (E), and collectible (C).
-// There must be exactly one P, exactly one E, and at least one C.
-static int	check_elements(t_game *game)
-{
-	int	i;
-	int	j;
-	int	count_player;
-	int	count_exit;
-	int	count_collect;
-
-	count_player = 0;
-	count_exit = 0;
-	count_collect = 0;
-	i = 0;
-	while (game->map[i])
-	{
-		j = 0;
-		while (game->map[i][j])
-		{
-			if (game->map[i][j] == PLAYER)
-				count_player++;
-			else if (game->map[i][j] == EXIT)
-				count_exit++;
-			else if (game->map[i][j] == COLLECT)
-				count_collect++;
-			j++;
-		}
-		i++;
-	}
-	if (count_player != 1 || count_exit != 1 || count_collect < 1)
-		return (false);
-	return (true);
-}
 
 // Checks the map for rectangularity, proper wall borders,
 // and required elements. 

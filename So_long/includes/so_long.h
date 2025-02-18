@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 23:19:51 by clu               #+#    #+#             */
-/*   Updated: 2025/02/18 14:29:24 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/18 16:00:11 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,9 @@ typedef struct s_game
 void	size_map(t_game *game, char **map);
 void	parse_map(char *file, t_game *game);
 int		validate_map(t_game *game);
+int		check_rectangle(t_game *game);
+int		check_walls(t_game *game);
+int		check_elements(t_game *game);
 void	set_player_start(t_game *game);
 
 // Free functions
