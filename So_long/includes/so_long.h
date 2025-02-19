@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 23:19:51 by clu               #+#    #+#             */
-/*   Updated: 2025/02/19 14:34:40 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/19 16:06:43 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef struct s_game
 	t_textures	*tex;
 	t_images	*img;
 	char		**map;
+	char		**map_copy;
 	int			move_count;
 	int			map_height;
 	int			map_width;
@@ -82,6 +83,7 @@ typedef struct s_game
 void	size_map(t_game *game, char **map);
 void	parse_map(char *file, t_game *game);
 int		check_elements(t_game *game);
+int		solvable(t_game *game);
 int		validate_map(t_game *game);
 void	set_player_start(t_game *game);
 

@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:32:18 by clu               #+#    #+#             */
-/*   Updated: 2025/02/19 13:43:29 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/19 16:06:20 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,11 @@ int	validate_map(t_game *game)
 	{
 		ft_printf("Error: Map must have 1 player, 1 exit and at ");
 		ft_printf("least 1 collectible\n");
+		exit(EXIT_FAILURE);
+	}
+	if (!solvable(game))
+	{
+		ft_printf("Error: Map is not solvable\n");
 		exit(EXIT_FAILURE);
 	}
 	return (true);
