@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:21:13 by clu               #+#    #+#             */
-/*   Updated: 2025/02/19 12:03:15 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/19 13:45:08 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,5 +79,5 @@ void	parse_map(char *file, t_game *game)
 		width = 0;
 	game->map_height = height;
 	game->map_width = width;
-	ft_printf("Map dimensions: %d x %d\n", width, height);
+	ft_printf("Map dimensions: %d x %d\n\n", width, height);
 }

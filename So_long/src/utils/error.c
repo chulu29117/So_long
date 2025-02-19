@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:32:04 by clu               #+#    #+#             */
-/*   Updated: 2025/02/18 14:31:06 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/19 13:43:14 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,6 @@
 
 void	exit_error(const char *msg)
 {
-	ft_printf("Error\n%s\n", msg);
+	ft_printf("Error: %s\n", msg);
 	exit(EXIT_FAILURE);
 }

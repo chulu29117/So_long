@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:32:18 by clu               #+#    #+#             */
-/*   Updated: 2025/02/19 12:05:52 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/19 13:43:29 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	validate_map(t_game *game)
 		exit_error("Map is not closed/surrounded by wall");
 	if (!check_elements(game))
 	{
-		ft_printf("Error:\nMap must have 1 player, 1 exit and at ");
+		ft_printf("Error: Map must have 1 player, 1 exit and at ");
 		ft_printf("least 1 collectible\n");
 		exit(EXIT_FAILURE);
 	}
