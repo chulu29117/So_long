@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 22:39:27 by clu               #+#    #+#             */
-/*   Updated: 2025/02/19 14:42:00 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/19 15:30:17 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,14 @@ int	main(int argc, char **argv)
 {
 	t_game	game;
 	char	*map_path;
+	char	*ber;
 
 	ft_bzero(&game, sizeof(t_game));
 	if (argc != 2)
 		exit_error("\nProgram usage: ./so_long <map.ber>");
+	ber = ft_strrchr(argv[1], '.');
+	if (!ber || ft_strcmp(ber, ".ber"))
+		exit_error("Invalid map file, must be a .ber file");
 	map_path = get_map_path(argv[1]);
 	if (!start_game(&game, map_path))
 		exit_error("Failed to start game");
