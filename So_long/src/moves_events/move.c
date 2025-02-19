@@ -6,12 +6,13 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:21:26 by clu               #+#    #+#             */
-/*   Updated: 2025/02/19 11:09:31 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/19 12:37:44 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
+// Show move count on the game screen
 static void	show_move_count(t_game *game)
 {
 	char	*moves;
@@ -31,6 +32,8 @@ static void	show_move_count(t_game *game)
 	free(show_moves);
 }
 
+// Count the number of collectibles on the map
+// and store the total number of collectibles
 void	count_collect(t_game *game)
 {
 	int	i;
@@ -53,20 +56,34 @@ void	count_collect(t_game *game)
 	game->total_collected = count;
 }
 
-void	move_player(t_game *game, int dx, int dy)
+// Move the player on the map
+static void	player_pos(t_game *game, int new_x, int new_y)
 {
 	int	old_x;
 	int	old_y;
-	int	new_x;
-	int	new_y;
+
+	old_x = game->player.x;
+	old_y = game->player.y;
+	mlx_image_to_window(game->mlx, game->img->floor,
+		old_x * TILE_SIZE, old_y * TILE_SIZE);
+	game->player.x = new_x;
+	game->player.y = new_y;
+	game->move_count++;
+	ft_printf("MOVES: %i\n", game->move_count);
+	mlx_image_to_window(game->mlx, game->img->player,
+		new_x * TILE_SIZE, new_y * TILE_SIZE);
+	show_move_count(game);
+}
+
+// Check if the player can move to the new position
+// If the new position is a wall or outside the map, return false
+// If the new position is a collectible, increment the collected count
+static int	check_move(t_game *game, int new_x, int new_y)
+{
 	int	max_x;
 	int	max_y;
 	int	row;
 
-	old_x = game->player.x;
-	old_y = game->player.y;
-	new_x = game->player.x + dx;
-	new_y = game->player.y + dy;
 	max_x = ft_strlen(game->map[0]);
 	max_y = 0;
 	row = 0;
@@ -77,9 +94,9 @@ void	move_player(t_game *game, int dx, int dy)
 	}
 	if (new_x < 0 || new_x >= max_x || new_y < 0
 		|| new_y >= max_y)
-		return ;
+		return (false);
 	if (game->map[new_y][new_x] == '1')
-		return ;
+		return (false);
 	if (game->map[new_y][new_x] == COLLECT)
 	{
 		game->collected++;
@@ -87,6 +104,21 @@ void	move_player(t_game *game, int dx, int dy)
 			game->total_collected - game->collected);
 		game->map[new_y][new_x] = FLOOR;
 	}
+	return (true);
+}
+
+// Move the player on the map
+// If the player moves to the exit, show a message
+// If the player moves to the exit without collecting all, show a message
+void	move_player(t_game *game, int dx, int dy)
+{
+	int	new_x;
+	int	new_y;
+
+	new_x = game->player.x + dx;
+	new_y = game->player.y + dy;
+	if (!check_move(game, new_x, new_y))
+		return ;
 	if (game->map[new_y][new_x] == EXIT)
 	{
 		if (game->collected != game->total_collected)
@@ -95,20 +127,14 @@ void	move_player(t_game *game, int dx, int dy)
 			return ;
 		}
 	}
-	mlx_image_to_window(game->mlx, game->img->floor,
-		old_x * TILE_SIZE, old_y * TILE_SIZE);
-	game->player.x = new_x;
-	game->player.y = new_y;
-	game->move_count++;
-	ft_printf("MOVES: %i\n", game->move_count);
-	mlx_image_to_window(game->mlx, game->img->player,
-		new_x * TILE_SIZE, new_y * TILE_SIZE);
-	show_move_count(game);
+	player_pos(game, new_x, new_y);
 	if (game->map[new_y][new_x] == EXIT)
 	{
 		ft_printf("Congratulations! You're the Pikachu master!\n");
+		ft_printf("Total moves: %i\n", game->move_count);
+		ft_printf("Press ESC or ENTER to exit\n");
 		game->finished = true;
-		mlx_put_string(game->mlx, "Congratulations! You've caught em all!", 200, 200);
-		mlx_put_string(game->mlx, "Press ESC or ENTER to EXIT", 200, 250);
+		mlx_image_to_window(game->mlx, game->img->exit,
+			new_x * TILE_SIZE, new_y * TILE_SIZE);
 	}
 }

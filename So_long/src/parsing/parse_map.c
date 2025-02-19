@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:21:13 by clu               #+#    #+#             */
-/*   Updated: 2025/02/18 14:47:03 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/19 12:03:15 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	parse_map(char *file, t_game *game)
 	int		width;
 
 	file_content = read_file(file);
-	ft_printf("File content read:\n%s\n", file_content);
+	ft_printf("Map file read:\n%s\n", file_content);
 	if (!file_content || !file_content[0])
 		exit_error("Empty map file");
 	game->map = ft_split(file_content, '\n');
@@ -80,31 +80,4 @@ void	parse_map(char *file, t_game *game)
 	game->map_height = height;
 	game->map_width = width;
 	ft_printf("Map dimensions: %d x %d\n", width, height);
-}
-
-// Set the player's starting position
-void	set_player_start(t_game *game)
-{
-	int	row;
-	int	col;
-
-	if (!game->map)
-		exit_error("Error:\nNo map found\n");
-	row = 0;
-	while (game->map[row])
-	{
-		col = 0;
-		while (game->map[row][col])
-		{
-			if (game->map[row][col] == 'P')
-			{
-				game->player.x = col;
-				game->player.y = row;
-				return ;
-			}
-			col++;
-		}
-		row++;
-	}
-	exit_error("No player start ('P') found in map");
 }

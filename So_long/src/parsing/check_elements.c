@@ -6,78 +6,11 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 15:56:34 by clu               #+#    #+#             */
-/*   Updated: 2025/02/18 18:40:16 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/19 11:47:28 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
-
-// Ensure that every row in the map has the same length.
-int	check_rectangle(t_game *game)
-{
-	int		i;
-	size_t	len;
-
-	if (!game->map)
-		return (false);
-	if (!game->map[0])
-		return (false);
-	len = ft_strlen(game->map[0]);
-	i = 0;
-	while (game->map[i])
-	{
-		if (ft_strlen(game->map[i]) != len)
-			return (false);
-		i++;
-	}
-	return (true);
-}
-
-// Check the first and last rows for walls.
-static int	check_top_bot_walls(t_game *game, int height)
-{
-	int		i;
-
-	i = 0;
-	while (game->map[0][i])
-	{
-		if (game->map[0][i] != WALL)
-			return (false);
-		i++;
-	}
-	i = 0;
-	while (game->map[height - 1][i])
-	{
-		if (game->map[height - 1][i] != WALL)
-			return (false);
-		i++;
-	}
-	return (true);
-}
-
-// Ensure that the first and last rows consist of 1s
-// First and last characters of each rows are also 1s
-int	check_walls(t_game *game)
-{
-	int	i;
-	int	height;
-
-	if (!game->map)
-		return (false);
-	height = 0;
-	while (game->map[height])
-		height++;
-	i = 0;
-	while (game->map[0][i])
-	{
-		if (game->map[0][i] != WALL)
-			return (false);
-		i++;
-	}
-	if (check_top_bot_walls(game, height) == false)
-		return (false);
-	return (true);
-}
 
 // Count the occurrences of the player (P) and exit (E).
 // There must be exactly one P and exactly one E.
@@ -100,7 +33,9 @@ static int	check_p_and_e(t_game *game, int *count_player, int *count_exit)
 		}
 		i++;
 	}
-	return (*count_player == 1 && *count_exit == 1);
+	if (*count_player == 1 && *count_exit == 1)
+		return (true);
+	return (false);
 }
 
 // Count the occurrences of collectibles (C).

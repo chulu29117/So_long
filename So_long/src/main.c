@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 22:39:27 by clu               #+#    #+#             */
-/*   Updated: 2025/02/18 19:23:55 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/19 12:56:03 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	init_game(t_game *game)
 	if (!game->mlx)
 	{
 		free_game(game);
-		return (false);
+		exit_error("Failed to initialize mlx game");
 	}
 	get_textures(game);
 	get_images(game);
@@ -50,9 +50,8 @@ static int	start_game(t_game *game, char *map_path)
 	free(map_path);
 	if (!validate_map(game))
 	{
-		ft_printf("Error\nInvalid map\n");
 		free_game(game);
-		return (EXIT_FAILURE);
+		exit_error("Invalid map");
 	}
 	size_map(game, game->map);
 	set_player_start(game);
@@ -61,10 +60,10 @@ static int	start_game(t_game *game, char *map_path)
 	game->collected = 0;
 	if (!init_game(game))
 	{
-		ft_printf("Error\nFailed to initialize game\n");
-		return (EXIT_FAILURE);
+		free_game(game);
+		exit_error("Failed to initialize game");
 	}
-	return (EXIT_SUCCESS);
+	return (true);
 }
 
 int	main(int argc, char **argv)
@@ -73,12 +72,9 @@ int	main(int argc, char **argv)
 	char	*map_path;
 
 	if (argc != 2)
-	{
-		ft_printf("Usage: %s <map.ber>\n", argv[0]);
-		return (EXIT_FAILURE);
-	}
+		exit_error("Usage: ./so_long <map.ber>");
 	map_path = get_map_path(argv[1]);
-	if (start_game(&game, map_path) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
+	if (!start_game(&game, map_path))
+		exit_error("Failed to start game");
 	return (EXIT_SUCCESS);
 }
