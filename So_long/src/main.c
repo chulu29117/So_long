@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 22:39:27 by clu               #+#    #+#             */
-/*   Updated: 2025/02/19 14:15:45 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/19 14:23:01 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,11 @@ static char	*get_map_path(char *arg)
 }
 
 // Initialize the game
+// Initialize the mlx window
+// Load the textures->Load the images->Draw the map
+// Draw the player at the player's starting position
+// Set the keyhook to the keyhook function
+// Start the mlx loop
 static int	init_game(t_game *game)
 {
 	game->mlx = mlx_init(game->map_width, game->map_height, "so_long", true);
@@ -47,6 +52,9 @@ static int	init_game(t_game *game)
 	return (true);
 }
 
+// Start the game->Parse the map->Validate the map
+// Check map size->Set the player start->Count the collectibles
+// Print the number of collectibles to catch->Initialize the game
 static int	start_game(t_game *game, char *map_path)
 {
 	parse_map(map_path, game);
@@ -60,7 +68,6 @@ static int	start_game(t_game *game, char *map_path)
 	set_player_start(game);
 	count_collect(game);
 	ft_printf("Number of Pikachus to catch: %d\n", game->total_collected);
-	// game->collected = 0;
 	if (!init_game(game))
 	{
 		free_game(game);
@@ -69,12 +76,15 @@ static int	start_game(t_game *game, char *map_path)
 	return (true);
 }
 
+// Main to start the game
+// Initialize the game struct to 0
+// Get the map path from the argument 1
 int	main(int argc, char **argv)
 {
 	t_game	game;
 	char	*map_path;
 
-    ft_memset(&game, 0, sizeof(t_game));
+	ft_bzero(&game, sizeof(t_game));
 	if (argc != 2)
 		exit_error("\nProgram usage: ./so_long <map.ber>");
 	map_path = get_map_path(argv[1]);

@@ -6,12 +6,14 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:32:50 by clu               #+#    #+#             */
-/*   Updated: 2025/02/18 14:58:59 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/19 14:27:38 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
+// Load the textures
+// Allocate memory for the textures
 void	get_textures(t_game *game)
 {
 	game->tex = ft_calloc(1, sizeof(t_textures));

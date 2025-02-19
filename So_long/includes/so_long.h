@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 23:19:51 by clu               #+#    #+#             */
-/*   Updated: 2025/02/19 11:32:10 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/19 14:34:40 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,14 @@
 # define TRUE 1
 # define FALSE 0
 
-// Player structure stores the player's grid coordinates
+// Player struct storing the player's grid coordinates
 typedef struct s_player
 {
 	int	x;
 	int	y;
 }	t_player;
 
+// Texture struct storing the texture data
 typedef struct s_textures
 {
 	mlx_texture_t	*floor;
@@ -51,6 +52,7 @@ typedef struct s_textures
 	mlx_texture_t	*exit;
 }	t_textures;
 
+// Image struct storing the image data
 typedef struct s_images
 {
 	mlx_image_t	*floor;
@@ -60,6 +62,7 @@ typedef struct s_images
 	mlx_image_t	*exit;
 }	t_images;
 
+// Game struct storing the game data
 typedef struct s_game
 {
 	mlx_t		*mlx;
@@ -82,11 +85,7 @@ int		check_elements(t_game *game);
 int		validate_map(t_game *game);
 void	set_player_start(t_game *game);
 
-// Free functions
-void	free_map(char **map);
-void	free_game(t_game *game);
-
-// void	load_textures(t_game *game);
+// Load_textures(t_game *game);
 void	get_textures(t_game *game);
 void	get_images(t_game *game);
 void	draw_map(t_game *game, t_images *imag);
@@ -95,6 +94,10 @@ void	draw_map(t_game *game, t_images *imag);
 void	count_collect(t_game *game);
 void	move_player(t_game *game, int dx, int dy);
 void	keyhook(mlx_key_data_t keydata, void *param);
+
+// Free functions
+void	free_map(char **map);
+void	free_game(t_game *game);
 
 // Error
 void	exit_error(const char *msg);

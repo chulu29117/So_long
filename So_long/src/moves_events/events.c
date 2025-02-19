@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:21:31 by clu               #+#    #+#             */
-/*   Updated: 2025/02/19 14:05:24 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/19 14:20:07 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	keyhook(mlx_key_data_t keydata, void *param)
 			return ;
 		}
 		if (game->finished && (keydata.key == MLX_KEY_ESCAPE
-			|| keydata.key == MLX_KEY_ENTER))
+				|| keydata.key == MLX_KEY_ENTER))
 		{
 			mlx_close_window(game->mlx);
 			return ;
