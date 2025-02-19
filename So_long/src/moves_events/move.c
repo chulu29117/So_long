@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:21:26 by clu               #+#    #+#             */
-/*   Updated: 2025/02/18 19:22:57 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/19 11:09:31 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,13 +89,7 @@ void	move_player(t_game *game, int dx, int dy)
 	}
 	if (game->map[new_y][new_x] == EXIT)
 	{
-		if (game->collected == game->total_collected)
-		{
-			ft_printf("Congratulations! You've caught em all!\n");
-			mlx_close_window(game->mlx);
-			return ;
-		}
-		else
+		if (game->collected != game->total_collected)
 		{
 			ft_printf("YOU SHALL NOT LEAVE BEFORE YOU CATCH EM ALL!\n");
 			return ;
@@ -109,7 +103,12 @@ void	move_player(t_game *game, int dx, int dy)
 	ft_printf("MOVES: %i\n", game->move_count);
 	mlx_image_to_window(game->mlx, game->img->player,
 		new_x * TILE_SIZE, new_y * TILE_SIZE);
-	// game->img->player->instances[game->player_instance].x = new_x * TILE_SIZE;
-	// game->img->player->instances[game->player_instance].y = new_y * TILE_SIZE;
 	show_move_count(game);
+	if (game->map[new_y][new_x] == EXIT)
+	{
+		ft_printf("Congratulations! You're the Pikachu master!\n");
+		game->finished = true;
+		mlx_put_string(game->mlx, "Congratulations! You've caught em all!", 200, 200);
+		mlx_put_string(game->mlx, "Press ESC or ENTER to EXIT", 200, 250);
+	}
 }
