@@ -6,7 +6,7 @@
 #    By: clu <clu@student.hive.fi>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/11 22:37:50 by clu               #+#    #+#              #
-#    Updated: 2025/02/18 17:33:09 by clu              ###   ########.fr        #
+#    Updated: 2025/02/21 11:46:50 by clu              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ LIBMLX	:= $(MLX_DIR)/build/libmlx42.a
 LIBS	:= $(LIBFT) $(LIBMLX) -ldl -lglfw -pthread -lm
 
 # Include directories
-HEADERS = -I./includes -I$(LIBFT_DIR) -I$(MLX_DIR)/include/MLX42
+HEADERS = -I./include -I$(LIBFT_DIR) -I$(MLX_DIR)/include/MLX42
 
 # Source files and object files
 SRC = $(shell find $(SRC_DIR) -type f -name "*.c")

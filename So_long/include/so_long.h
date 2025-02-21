@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 23:19:51 by clu               #+#    #+#             */
-/*   Updated: 2025/02/21 11:33:47 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/21 11:52:11 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ typedef struct s_game
 	t_textures	*tex;
 	t_images	*img;
 	char		**map;
-	char		**map_copy;
 	char		*map_path;
 	int			move_count;
 	int			map_height;
