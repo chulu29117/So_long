@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:21:13 by clu               #+#    #+#             */
-/*   Updated: 2025/02/19 13:45:08 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/21 15:40:04 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ void	size_map(t_game *game, char **map)
 	i = 0;
 	while (map[i])
 		i++;
+	game->map_cols = ft_strlen(map[0]);
+	game->map_rows = i;
 	game->map_width = ft_strlen(map[0]) * TILE_SIZE;
 	game->map_height = i * TILE_SIZE;
 }

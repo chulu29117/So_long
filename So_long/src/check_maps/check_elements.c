@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 15:56:34 by clu               #+#    #+#             */
-/*   Updated: 2025/02/21 11:49:24 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/21 14:55:10 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static int	check_p_and_e(t_game *game, int *count_player, int *count_exit)
 		while (game->map[i][j])
 		{
 			if (game->map[i][j] == PLAYER)
+			
 				(*count_player)++;
 			else if (game->map[i][j] == EXIT)
 				(*count_exit)++;
