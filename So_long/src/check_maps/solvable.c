@@ -1,12 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
+/*   solvable.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/21 11:35:21 by clu               #+#    #+#             */
+/*   Updated: 2025/02/21 11:42:14 by clu              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
 /*   check_solvable.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 15:43:56 by clu               #+#    #+#             */
-/*   Updated: 2025/02/21 11:15:17 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/21 11:33:35 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,20 +55,18 @@ static void	flood_map(t_game *game, int y, int x)
 {
 	if (x < 0 || y < 0 || x >= game->map_width || y >= game->map_height)
 		return ;
-	if (game->map[y][x] == WALL || game->map[y][x] == VISITED)
+	if (game->map[y][x] == WALL || game->map[y][x] == 'V')
 		return ;
 	if (game->map[y][x] == COLLECT)
 		game->collected++;
 	if (game->map[y][x] == EXIT)
 		game->finished = TRUE;
-	game->map[y][x] = 'F';
+	game->map[y][x] = 'V';
 	flood_map(game, y - 1, x);
 	flood_map(game, y + 1, x);
 	flood_map(game, y, x - 1);
 	flood_map(game, y, x + 1);
 }
-
-
 
 // Check if the map is solvable
 int	solvable(t_game *game)
