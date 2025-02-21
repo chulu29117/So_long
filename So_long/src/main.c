@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 22:39:27 by clu               #+#    #+#             */
-/*   Updated: 2025/02/19 16:43:04 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/21 10:45:13 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static int	init_game(t_game *game)
 	mlx_loop(game->mlx);
 	mlx_terminate(game->mlx);
 	free_game(game);
-	return (true);
+	return (TRUE);
 }
 
 // Start the game->Parse the map->Validate the map
@@ -73,7 +73,7 @@ static int	start_game(t_game *game, char *map_path)
 		free_game(game);
 		exit_error("Failed to initialize game");
 	}
-	return (true);
+	return (TRUE);
 }
 
 // Main to start the game
@@ -82,7 +82,6 @@ static int	start_game(t_game *game, char *map_path)
 int	main(int argc, char **argv)
 {
 	t_game	game;
-	char	*map_path;
 	char	*ber;
 
 	ft_bzero(&game, sizeof(t_game));
@@ -91,8 +90,8 @@ int	main(int argc, char **argv)
 	ber = ft_strrchr(argv[1], '.');
 	if (!ber || ft_strcmp(ber, ".ber"))
 		exit_error("Invalid map file, must be a .ber file");
-	map_path = get_map_path(argv[1]);
-	if (!start_game(&game, map_path))
+	game.map_path = get_map_path(argv[1]);
+	if (!start_game(&game, game.map_path))
 		exit_error("Failed to start game");
 	return (EXIT_SUCCESS);
 }

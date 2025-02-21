@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 23:19:51 by clu               #+#    #+#             */
-/*   Updated: 2025/02/19 16:06:43 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/21 11:15:11 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # define PLAYER 'P'
 # define EXIT 'E'
 # define FLOOR '0'
+# define VISITED 'V'
 
 /* Boolean values */
 # define TRUE 1
@@ -71,6 +72,7 @@ typedef struct s_game
 	t_images	*img;
 	char		**map;
 	char		**map_copy;
+	char		*map_path;
 	int			move_count;
 	int			map_height;
 	int			map_width;

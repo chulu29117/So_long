@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 15:56:34 by clu               #+#    #+#             */
-/*   Updated: 2025/02/19 11:47:28 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/21 10:41:04 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ static int	check_p_and_e(t_game *game, int *count_player, int *count_exit)
 		i++;
 	}
 	if (*count_player == 1 && *count_exit == 1)
-		return (true);
-	return (false);
+		return (TRUE);
+	return (FALSE);
 }
 
 // Count the occurrences of collectibles (C).
@@ -72,8 +72,8 @@ int	check_elements(t_game *game)
 	count_exit = 0;
 	count_collect = 0;
 	if (!check_p_and_e(game, &count_player, &count_exit))
-		return (false);
+		return (FALSE);
 	if (!check_collectibles(game, &count_collect))
-		return (false);
-	return (true);
+		return (FALSE);
+	return (TRUE);
 }

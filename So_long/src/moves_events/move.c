@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:21:26 by clu               #+#    #+#             */
-/*   Updated: 2025/02/19 14:42:43 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/21 10:41:56 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,9 @@ static int	check_move(t_game *game, int new_x, int new_y)
 	}
 	if (new_x < 0 || new_x >= max_x || new_y < 0
 		|| new_y >= max_y)
-		return (false);
+		return (FALSE);
 	if (game->map[new_y][new_x] == '1')
-		return (false);
+		return (FALSE);
 	if (game->map[new_y][new_x] == COLLECT)
 	{
 		game->collected++;
@@ -104,7 +104,7 @@ static int	check_move(t_game *game, int new_x, int new_y)
 			game->total_collected - game->collected);
 		game->map[new_y][new_x] = FLOOR;
 	}
-	return (true);
+	return (TRUE);
 }
 
 // Move the player on the map
@@ -133,7 +133,7 @@ void	move_player(t_game *game, int dx, int dy)
 		ft_printf("Congratulations! You're the Pikachu master!\n");
 		ft_printf("Total moves: %i\n", game->move_count);
 		ft_printf("Press ESC or ENTER to exit\n");
-		game->finished = true;
+		game->finished = TRUE;
 		mlx_image_to_window(game->mlx, game->img->exit,
 			new_x * TILE_SIZE, new_y * TILE_SIZE);
 	}

@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 15:43:56 by clu               #+#    #+#             */
-/*   Updated: 2025/02/19 16:42:45 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/21 11:15:17 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,46 +43,36 @@ static void	flood_map(t_game *game, int y, int x)
 {
 	if (x < 0 || y < 0 || x >= game->map_width || y >= game->map_height)
 		return ;
-	if (game->map_copy[y][x] == WALL || game->map_copy[y][x] == 'F')
+	if (game->map[y][x] == WALL || game->map[y][x] == VISITED)
 		return ;
-	game->map_copy[y][x] = 'F';
+	if (game->map[y][x] == COLLECT)
+		game->collected++;
+	if (game->map[y][x] == EXIT)
+		game->finished = TRUE;
+	game->map[y][x] = 'F';
 	flood_map(game, y - 1, x);
 	flood_map(game, y + 1, x);
 	flood_map(game, y, x - 1);
 	flood_map(game, y, x + 1);
 }
 
-static int	check_flood(t_game *game)
-{
-	int	i;
-	int	j;
 
-	i = 0;
-	while (i < game->map_height)
-	{
-		j = 0;
-		while (game->map_copy[i][j])
-		{
-			if (game->map_copy[i][j] == COLLECT || game->map_copy[i][j] == EXIT)
-				return (true);
-			j++;
-		}
-		i++;
-	}
-	return (false);
-}
 
+// Check if the map is solvable
 int	solvable(t_game *game)
 {
 	game->map_copy = copy_map(game->map, game->map_height);
-	if (!game->map_copy)	
+	if (!game->map_copy)
 		exit_error("Failed to copy map");
+	set_player_start(game);
+	game->collected = 0;
+	game->finished = FALSE;
 	flood_map(game, game->player.y, game->player.x);
-	if (!check_flood(game))
+	if (game->collected != game->total_collected || !game->finished)
 	{
 		free_map(game->map_copy);
-		return (false);
+		return (FALSE);
 	}
 	free_map(game->map_copy);
-	return (true);
+	return (TRUE);
 }

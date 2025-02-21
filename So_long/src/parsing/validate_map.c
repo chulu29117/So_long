@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:32:18 by clu               #+#    #+#             */
-/*   Updated: 2025/02/19 16:06:20 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/21 10:41:28 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static int	check_walls(t_game *game)
 	int	height;
 
 	if (!game->map)
-		return (false);
+		return (FALSE);
 	height = 0;
 	while (game->map[height])
 		height++;
@@ -71,12 +71,12 @@ static int	check_walls(t_game *game)
 	while (game->map[0][i])
 	{
 		if (game->map[0][i] != WALL)
-			return (false);
+			return (FALSE);
 		i++;
 	}
-	if (check_top_bot_walls(game, height) == false)
-		return (false);
-	return (true);
+	if (check_top_bot_walls(game, height) == FALSE)
+		return (FALSE);
+	return (TRUE);
 }
 
 // Checks the map for rectangularity, proper wall borders,
@@ -99,7 +99,7 @@ int	validate_map(t_game *game)
 		ft_printf("Error: Map is not solvable\n");
 		exit(EXIT_FAILURE);
 	}
-	return (true);
+	return (TRUE);
 }
 
 // Set the player's starting position
