@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 22:39:27 by clu               #+#    #+#             */
-/*   Updated: 2025/02/21 12:16:46 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/24 11:49:18 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,14 @@ static int	start_game(t_game *game, char *map_path)
 {
 	parse_map(map_path, game);
 	free(map_path);
+	count_collect(game);
+	size_map(game, game->map);
+	set_player_start(game);
 	if (!validate_map(game))
 	{
 		free_game(game);
 		exit_error("Invalid map");
 	}
-	size_map(game, game->map);
-	set_player_start(game);
-	count_collect(game);
 	ft_printf("Number of Pikachus to catch: %d\n", game->total_collected);
 	if (!init_game(game))
 	{

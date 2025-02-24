@@ -6,11 +6,34 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 15:56:34 by clu               #+#    #+#             */
-/*   Updated: 2025/02/21 14:55:10 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/24 12:49:04 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
+
+// Check if the map contains only valid characters
+static int	check_char(t_game *game)
+{
+	int		i;
+	int		j;
+	char	*valid_chars;
+
+	i = 0;
+	valid_chars = "01CEP";
+	while (game->map[i])
+	{
+		j = 0;
+		while (game->map[i][j])
+		{
+			if (!ft_strchr(valid_chars, game->map[i][j]))
+				return (FALSE);
+			j++;
+		}
+		i++;
+	}
+	return (TRUE);
+}
 
 // Count the occurrences of the player (P) and exit (E).
 // There must be exactly one P and exactly one E.
@@ -26,7 +49,6 @@ static int	check_p_and_e(t_game *game, int *count_player, int *count_exit)
 		while (game->map[i][j])
 		{
 			if (game->map[i][j] == PLAYER)
-			
 				(*count_player)++;
 			else if (game->map[i][j] == EXIT)
 				(*count_exit)++;
@@ -72,9 +94,20 @@ int	check_elements(t_game *game)
 	count_player = 0;
 	count_exit = 0;
 	count_collect = 0;
+	if (!check_char(game))
+	{
+		ft_printf("Error: Map contains invalid characters!\n");
+		return (FALSE);
+	}
 	if (!check_p_and_e(game, &count_player, &count_exit))
+	{
+		ft_printf("Error: Map must have 1 player and 1 exit!\n");
 		return (FALSE);
+	}
 	if (!check_collectibles(game, &count_collect))
+	{
+		ft_printf("Error: Map must have at least 1 collectible!\n");
 		return (FALSE);
+	}
 	return (TRUE);
 }
