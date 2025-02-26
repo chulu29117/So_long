@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:21:26 by clu               #+#    #+#             */
-/*   Updated: 2025/02/21 10:41:56 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/26 17:18:58 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static void	player_pos(t_game *game, int new_x, int new_y)
 	game->player.x = new_x;
 	game->player.y = new_y;
 	game->move_count++;
-	ft_printf("MOVES: %i\n", game->move_count);
+	ft_printf("Moves: %i\n", game->move_count);
 	mlx_image_to_window(game->mlx, game->img->player,
 		new_x * TILE_SIZE, new_y * TILE_SIZE);
 	show_move_count(game);
@@ -123,16 +123,16 @@ void	move_player(t_game *game, int dx, int dy)
 	{
 		if (game->collected != game->total_collected)
 		{
-			ft_printf("YOU SHALL NOT LEAVE BEFORE YOU CATCH EM ALL!\n");
+			ft_printf("\n**YOU SHALL NOT LEAVE BEFORE YOU CATCH EM ALL!**\n\n");
 			return ;
 		}
 	}
 	player_pos(game, new_x, new_y);
 	if (game->map[new_y][new_x] == EXIT)
 	{
-		ft_printf("Congratulations! You're the Pikachu master!\n");
-		ft_printf("Total moves: %i\n", game->move_count);
-		ft_printf("Press ESC or ENTER to exit\n");
+		ft_printf("\n***** Congratulations! You're the Pikachu Master! *****\n");
+		ft_printf("\n*** Total moves used: %i ***\n", game->move_count);
+		ft_printf("\n**** Press ESC or ENTER to exit ****\n");
 		game->finished = TRUE;
 		mlx_image_to_window(game->mlx, game->img->exit,
 			new_x * TILE_SIZE, new_y * TILE_SIZE);

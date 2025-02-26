@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 11:35:21 by clu               #+#    #+#             */
-/*   Updated: 2025/02/24 12:31:21 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/26 17:36:54 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ static char	**copy_map(char **map, int height)
 
 	dup_map = (char **)malloc(sizeof(char *) * (height + 1));
 	if (!dup_map)
+	{
+		free_map(map);
 		exit_error("Failed to allocate memory for map copy");
+	}
 	i = 0;
 	while (i < height)
 	{
@@ -30,6 +33,7 @@ static char	**copy_map(char **map, int height)
 			while (i--)
 				free(dup_map[i]);
 			free(dup_map);
+			free_map(map);
 			exit_error("Failed to allocate memory for map copy");
 		}
 		i++;

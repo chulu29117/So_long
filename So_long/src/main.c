@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 22:39:27 by clu               #+#    #+#             */
-/*   Updated: 2025/02/24 11:49:18 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/26 17:37:59 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ static int	start_game(t_game *game, char *map_path)
 		free_game(game);
 		exit_error("Invalid map");
 	}
-	ft_printf("Number of Pikachus to catch: %d\n", game->total_collected);
+	ft_printf("*** Number of Pikachus to catch: %d ***\n",
+		game->total_collected);
 	if (!init_game(game))
 	{
 		free_game(game);
@@ -86,12 +87,15 @@ int	main(int argc, char **argv)
 
 	ft_bzero(&game, sizeof(t_game));
 	if (argc != 2)
-		exit_error("\nProgram usage: ./so_long <map.ber>");
+		exit_error("Program usage: ./so_long <map.ber>");
 	map_path = ft_strrchr(argv[1], '.');
 	if (!map_path || ft_strcmp(map_path, ".ber"))
 		exit_error("Invalid map file, must be a .ber file");
 	map_path = get_map_path(argv[1]);
 	if (!start_game(&game, map_path))
+	{
+		free_game(&game);
 		exit_error("Failed to start game");
+	}
 	return (EXIT_SUCCESS);
 }

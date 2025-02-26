@@ -6,15 +6,13 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:21:13 by clu               #+#    #+#             */
-/*   Updated: 2025/02/21 15:40:04 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/26 18:06:07 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-/*
-Getting the size of the map by counting the number of rows and columns.
-*/
+// Getting the size of the map by counting the number of rows and columns.
 void	size_map(t_game *game, char **map)
 {
 	int	i;
@@ -28,38 +26,50 @@ void	size_map(t_game *game, char **map)
 	game->map_height = i * TILE_SIZE;
 }
 
-/* 
-Reads the entire contents of the file using get_next_line.
-Returns a dynamically allocated string containing the file's content.
-*/
-static char	*read_file(char *file)
+static char	*process_lines(int fd)
 {
-	int		fd;
 	char	*line;
 	char	*content;
 	char	*temp;
 
-	fd = open(file, O_RDONLY);
-	if (fd < 0)
-		exit_error("Could not open map file");
-	content = ft_strdup("");
 	line = get_next_line(fd);
 	while (line)
 	{
+		if (line[0] == '\0' || line[0] == '\n')
+		{
+			free(line);
+			free(content);
+			exit_error("Empty line in map file");
+		}
 		temp = content;
 		content = ft_strjoin(temp, line);
 		free(temp);
 		free(line);
+		if (!content)
+			exit_error("Failed to allocate memory for map content");
 		line = get_next_line(fd);
 	}
 	close(fd);
 	return (content);
 }
 
-/*
-Reads the map from the given file and fills the game->map structure.
-The map is stored as a NULL-terminated array of strings.
-*/
+// Reads the entire contents of the file using get_next_line.
+	// Returns a dynamically allocated string containing the file's content.
+static char	*read_file(char *file)
+{
+	int		fd;
+	char	*content;
+
+	fd = open(file, O_RDONLY);
+	if (fd < 0)
+		exit_error("Could not open map file");
+	content = process_lines(fd);
+	close(fd);
+	return (content);
+}
+
+// Reads the map from the given file and fills the game->map structure.
+	// The map is stored as a NULL-terminated array of strings.
 void	parse_map(char *file, t_game *game)
 {
 	char	*file_content;
@@ -67,7 +77,6 @@ void	parse_map(char *file, t_game *game)
 	int		width;
 
 	file_content = read_file(file);
-	ft_printf("Map file read:\n%s\n", file_content);
 	if (!file_content || !file_content[0])
 		exit_error("Empty map file");
 	game->map = ft_split(file_content, '\n');
@@ -81,5 +90,4 @@ void	parse_map(char *file, t_game *game)
 		width = 0;
 	game->map_height = height;
 	game->map_width = width;
-	ft_printf("Map dimensions: %d x %d\n\n", width, height);
 }

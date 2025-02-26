@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:32:18 by clu               #+#    #+#             */
-/*   Updated: 2025/02/24 12:55:29 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/26 17:34:30 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,13 +85,25 @@ static int	check_walls(t_game *game)
 int	validate_map(t_game *game)
 {
 	if (!check_rectangle(game))
+	{
+		free_game(game);
 		exit_error("Map is not rectangular!");
+	}
 	if (!check_walls(game))
+	{
+		free_game(game);
 		exit_error("Map is not closed/surrounded by wall!");
+	}
 	if (!check_elements(game))
+	{
+		free_game(game);
 		exit_error("Invalid map!");
+	}
 	if (!check_solvable(game))
-		exit_error("Map is not solvable!\n");
+	{
+		free_game(game);
+		exit_error("Map is not solvable!");
+	}
 	return (TRUE);
 }
 
@@ -119,5 +131,6 @@ void	set_player_start(t_game *game)
 		}
 		row++;
 	}
+	free_game(game);
 	exit_error("No player start ('P') found in map");
 }
