@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 15:56:34 by clu               #+#    #+#             */
-/*   Updated: 2025/02/26 12:36:13 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/27 17:38:49 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,17 +96,17 @@ int	check_elements(t_game *game)
 	count_collect = 0;
 	if (!check_char(game))
 	{
-		ft_printf("Error\nMap contains invalid characters!\n");
+		ft_printf("Error\nInvalid map: Map contains invalid characters!\n");
 		return (FALSE);
 	}
 	if (!check_p_and_e(game, &count_player, &count_exit))
 	{
-		ft_printf("Error\nMap must have 1 player and 1 exit!\n");
+		ft_printf("Error\nInvalid map: Map must have 1 player and 1 exit!\n");
 		return (FALSE);
 	}
 	if (!check_collectibles(game, &count_collect))
 	{
-		ft_printf("Error\nMap must have at least 1 collectible!\n");
+		ft_printf("Error\nInvalid map: Map must have at least 1 collectible!\n");
 		return (FALSE);
 	}
 	return (TRUE);

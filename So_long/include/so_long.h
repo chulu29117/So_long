@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 23:19:51 by clu               #+#    #+#             */
-/*   Updated: 2025/02/27 16:54:52 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/27 17:35:06 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <memory.h>
+# include <string.h>
+# include <errno.h>
 # include <time.h>
 # include <stdio.h>
 
@@ -91,7 +93,7 @@ int		is_valid_filename(const char *file);
 int		check_elements(t_game *game);
 int		check_solvable(t_game *game);
 int		validate_map(t_game *game);
-void	set_player_start(t_game *game);
+int		set_player_start(t_game *game);
 
 // Load_textures(t_game *game);
 void	get_textures(t_game *game);

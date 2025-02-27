@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 22:39:27 by clu               #+#    #+#             */
-/*   Updated: 2025/02/27 16:47:02 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/27 17:47:52 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 int	is_valid_filename(const char *file)
 {
 	const char	*ext;
-	
+
 	ext = ".ber";
 	if (!file || ft_strlen(file) <= ft_strlen(ext))
 		return (FALSE);
@@ -25,13 +25,13 @@ int	is_valid_filename(const char *file)
 	if (ft_strlen(file) == ft_strlen(ext))
 		return (FALSE);
 	if (file[ft_strlen(file) - ft_strlen(ext) - 1] == '/')
-		return (FALSE);	
+		return (FALSE);
 	return (TRUE);
 }
 
 // Get the path of the map file
-// If the map file is in the maps directory, return the path
-// Otherwise, return the path with the maps directory prepended
+	// If the map file is in the maps directory, return the path
+	// Otherwise, return the path with the maps directory prepended
 static char	*get_map_path(char *arg)
 {
 	char	*path;
@@ -58,11 +58,11 @@ static char	*get_map_path(char *arg)
 }
 
 // Initialize the game
-// Initialize the mlx window
-// Load the textures->Load the images->Draw the map
-// Draw the player at the player's starting position
-// Set the keyhook to the keyhook function
-// Start the mlx loop
+	// Initialize the mlx window
+	// Load the textures->Load the images->Draw the map
+	// Draw the player at the player's starting position
+	// Set the keyhook to the keyhook function
+	// Start the mlx loop
 static int	init_game(t_game *game)
 {
 	game->mlx = mlx_init(game->map_width, game->map_height, "so_long", true);
@@ -84,18 +84,23 @@ static int	init_game(t_game *game)
 }
 
 // Start the game->Parse the map->Validate the map
-// Check map size->Set the player start->Count the collectibles
-// Print the number of collectibles to catch->Initialize the game
+	// Check map size->Set the player start->Count the collectibles
+	// Print the number of collectibles to catch->Initialize the game
 static int	start_game(t_game *game, char *map_path)
 {
 	parse_map(map_path, game);
 	count_collect(game);
 	size_map(game, game->map);
-	set_player_start(game);
+	if (!set_player_start(game))
+	{
+		free(map_path);
+		exit(EXIT_FAILURE);
+	}
 	if (!validate_map(game))
 	{
+		free(map_path);
 		free_game(game);
-		exit_error("Invalid map");
+		exit(EXIT_FAILURE);
 	}
 	ft_printf("*** Number of Pikachus to catch: %d ***\n",
 		game->total_collected);
@@ -108,8 +113,8 @@ static int	start_game(t_game *game, char *map_path)
 }
 
 // Main to start the game
-// Initialize the game struct to 0
-// Get the map path from the argument 1
+	// Initialize the game struct to 0
+	// Get the map path from the argument 1
 int	main(int argc, char **argv)
 {
 	t_game	game;

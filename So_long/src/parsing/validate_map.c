@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:32:18 by clu               #+#    #+#             */
-/*   Updated: 2025/02/27 13:14:55 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/27 17:38:22 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,6 @@ static int	check_walls(t_game *game)
 
 	if (!game->map)
 		return (FALSE);
-	// height = 0;
-	// while (game->map[height])
-	// 	height++;
 	i = 0;
 	while (i < game->map_rows)
 	{
@@ -85,23 +82,20 @@ int	validate_map(t_game *game)
 {
 	if (!check_rectangle(game))
 	{
-		free_game(game);
-		exit_error("Map is not rectangular!");
+		ft_printf("Error\nInvalid map: Map is not rectangular!\n");
+		return (FALSE);
 	}
 	if (!check_walls(game))
 	{
-		free_game(game);
-		exit_error("Map is not closed/surrounded by wall!");
+		ft_printf("Error\nInvalid map: Map is not closed/surrounded by wall!");
+		return (FALSE);
 	}
 	if (!check_elements(game))
-	{
-		free_game(game);
-		exit_error("Invalid map!");
-	}
+		return (FALSE);
 	if (!check_solvable(game))
 	{
-		free_game(game);
-		exit_error("Map is not solvable!");
+		ft_printf("Error\nMap is not solvable!");
+		return (FALSE);
 	}
 	return (TRUE);
 }

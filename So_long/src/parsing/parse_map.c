@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:21:13 by clu               #+#    #+#             */
-/*   Updated: 2025/02/27 16:55:37 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/27 17:36:59 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,11 @@ static char	*read_file(char *file)
 
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
+	{
+		free(file);
+		close(fd);
 		exit_error("Failed to open map: check file path");
+	}
 	content = ft_strdup("");
 	if (!content)
 	{
@@ -100,7 +104,7 @@ void	parse_map(char *file, t_game *game)
 }
 
 // Set the player's starting position
-void	set_player_start(t_game *game)
+int	set_player_start(t_game *game)
 {
 	int	row;
 	int	col;
@@ -117,12 +121,13 @@ void	set_player_start(t_game *game)
 			{
 				game->player.x = col;
 				game->player.y = row;
-				return ;
+				return (TRUE);
 			}
 			col++;
 		}
 		row++;
 	}
 	free_game(game);
-	exit_error("No player start ('P') found in map");
+	ft_printf("Error\nNo player start ('P') found in map\n");
+	return (FALSE);
 }

@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 15:03:13 by clu               #+#    #+#             */
-/*   Updated: 2025/02/27 15:34:56 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/27 17:00:04 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int			ft_isdigit(int c);
 int			ft_isalnum(int c);
 int			ft_isascii(int c);
 int			ft_isprint(int c);
+int			ft_is_whitespace(char c);
 int			ft_toupper(int c);
 int			ft_tolower(int c);
 
