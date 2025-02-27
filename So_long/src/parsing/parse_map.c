@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:21:13 by clu               #+#    #+#             */
-/*   Updated: 2025/02/27 14:27:21 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/27 16:55:37 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,6 @@ static void	process_lines(char **content, char *line, int fd)
 {
 	char	*temp;
 
-	if (line[0] == '\0' || line[0] == '\n')
-	{
-		free(line);
-		free(*content);
-		close(fd);
-		exit_error("Empty line in map file");
-	}
 	temp = *content;
 	*content = ft_strjoin(temp, line);
 	free(temp);
@@ -83,22 +76,27 @@ static char	*read_file(char *file)
 void	parse_map(char *file, t_game *game)
 {
 	char	*file_content;
+	char	**map;
 
 	file_content = read_file(file);
 	if (!file_content || !file_content[0])
 	{
 		free(file_content);
-		free(file);
-		free_game(game);
-		exit_error("Empty map file");
+		free_parsing(game, file, "Empty map file");
 	}
-	game->map = ft_split(file_content, '\n');
-	if (!game->map)
+	if (ft_strnstr(file_content, "\n\n", ft_strlen(file_content)))
 	{
-		free_game(game);
-		exit_error("Failed to allocate memory for map");
+		free(file_content);
+		free_parsing(game, file, "Empty line in the map");
+	}
+	map = ft_split(file_content, '\n');
+	if (!map)
+	{
+		free(file_content);
+		free_parsing(game, file, "Failed to allocate memory for map");
 	}
 	free(file_content);
+	game->map = map;
 }
 
 // Set the player's starting position

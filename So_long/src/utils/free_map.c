@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:21:37 by clu               #+#    #+#             */
-/*   Updated: 2025/02/19 11:52:35 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/27 16:56:01 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,12 @@ void	free_game(t_game *game)
 		free(game->tex);
 		game->tex = NULL;
 	}
+}
+
+// Free parsing resources
+void	free_parsing(t_game *game, char *file, char *msg)
+{
+	free(file);
+	free_game(game);
+	exit_error(msg);
 }

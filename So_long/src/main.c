@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 22:39:27 by clu               #+#    #+#             */
-/*   Updated: 2025/02/27 13:43:24 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/27 16:47:02 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,19 @@ static char	*get_map_path(char *arg)
 	{
 		path = ft_strjoin("maps/", arg);
 		if (!path)
+		{
+			free(path);
 			exit_error("Failed to allocate memory for map path");
+		}
 	}
 	else
 	{
 		path = ft_strdup(arg);
 		if (!path)
+		{
+			free(path);
 			exit_error("Failed to allocate memory for map path");
+		}
 	}
 	return (path);
 }
@@ -83,7 +89,6 @@ static int	init_game(t_game *game)
 static int	start_game(t_game *game, char *map_path)
 {
 	parse_map(map_path, game);
-	free(map_path);
 	count_collect(game);
 	size_map(game, game->map);
 	set_player_start(game);
@@ -117,12 +122,16 @@ int	main(int argc, char **argv)
 		exit_error("Invalid map, must have a valid name and .ber extension");
 	map_path = get_map_path(argv[1]);
 	if (!map_path)
+	{
+		free(map_path);
 		exit_error("Failed to get map path");
+	}
 	if (!start_game(&game, map_path))
 	{
 		free(map_path);
 		free_game(&game);
 		exit_error("Failed to start game");
 	}
+	free(map_path);
 	return (EXIT_SUCCESS);
 }

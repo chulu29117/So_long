@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 23:19:51 by clu               #+#    #+#             */
-/*   Updated: 2025/02/27 12:34:55 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/27 16:54:52 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ void	keyhook(mlx_key_data_t keydata, void *param);
 // Free functions
 void	free_map(char **map);
 void	free_game(t_game *game);
+void	free_parsing(t_game *game, char *file, char *msg);
 
 // Error
 void	exit_error(const char *msg);
