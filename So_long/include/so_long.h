@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 23:19:51 by clu               #+#    #+#             */
-/*   Updated: 2025/02/21 15:26:04 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/27 12:34:55 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ typedef struct s_game
 // Parsing map
 void	size_map(t_game *game, char **map);
 void	parse_map(char *file, t_game *game);
+int		is_valid_filename(const char *file);
 int		check_elements(t_game *game);
 int		check_solvable(t_game *game);
 int		validate_map(t_game *game);

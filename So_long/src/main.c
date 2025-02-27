@@ -6,11 +6,28 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 22:39:27 by clu               #+#    #+#             */
-/*   Updated: 2025/02/26 17:37:59 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/27 13:43:24 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
+
+// Check if the file is a valid .ber file with valid filename.
+int	is_valid_filename(const char *file)
+{
+	const char	*ext;
+	
+	ext = ".ber";
+	if (!file || ft_strlen(file) <= ft_strlen(ext))
+		return (FALSE);
+	if (ft_strcmp(file + ft_strlen(file) - ft_strlen(ext), ext) != 0)
+		return (FALSE);
+	if (ft_strlen(file) == ft_strlen(ext))
+		return (FALSE);
+	if (file[ft_strlen(file) - ft_strlen(ext) - 1] == '/')
+		return (FALSE);	
+	return (TRUE);
+}
 
 // Get the path of the map file
 // If the map file is in the maps directory, return the path
@@ -20,9 +37,17 @@ static char	*get_map_path(char *arg)
 	char	*path;
 
 	if (!ft_strchr(arg, '/'))
+	{
 		path = ft_strjoin("maps/", arg);
+		if (!path)
+			exit_error("Failed to allocate memory for map path");
+	}
 	else
+	{
 		path = ft_strdup(arg);
+		if (!path)
+			exit_error("Failed to allocate memory for map path");
+	}
 	return (path);
 }
 
@@ -88,12 +113,14 @@ int	main(int argc, char **argv)
 	ft_bzero(&game, sizeof(t_game));
 	if (argc != 2)
 		exit_error("Program usage: ./so_long <map.ber>");
-	map_path = ft_strrchr(argv[1], '.');
-	if (!map_path || ft_strcmp(map_path, ".ber"))
-		exit_error("Invalid map file, must be a .ber file");
+	if (!is_valid_filename(argv[1]))
+		exit_error("Invalid map, must have a valid name and .ber extension");
 	map_path = get_map_path(argv[1]);
+	if (!map_path)
+		exit_error("Failed to get map path");
 	if (!start_game(&game, map_path))
 	{
+		free(map_path);
 		free_game(&game);
 		exit_error("Failed to start game");
 	}

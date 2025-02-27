@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:32:18 by clu               #+#    #+#             */
-/*   Updated: 2025/02/26 17:34:30 by clu              ###   ########.fr       */
+/*   Updated: 2025/02/27 13:14:55 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,22 @@ static int	check_rectangle(t_game *game)
 	size_t	len;
 
 	if (!game->map)
-		return (false);
+		return (FALSE);
 	if (!game->map[0])
-		return (false);
+		return (FALSE);
 	len = ft_strlen(game->map[0]);
 	i = 0;
 	while (game->map[i])
 	{
 		if (ft_strlen(game->map[i]) != len)
-			return (false);
+			return (FALSE);
 		i++;
 	}
-	return (true);
+	return (TRUE);
 }
 
 // Check the first and last rows for walls.
-static int	check_top_bot_walls(t_game *game, int height)
+static int	check_top_bot_walls(t_game *game)
 {
 	int		i;
 
@@ -42,17 +42,17 @@ static int	check_top_bot_walls(t_game *game, int height)
 	while (game->map[0][i])
 	{
 		if (game->map[0][i] != WALL)
-			return (false);
+			return (FALSE);
 		i++;
 	}
 	i = 0;
-	while (game->map[height - 1][i])
+	while (game->map[game->map_rows - 1][i])
 	{
-		if (game->map[height - 1][i] != WALL)
-			return (false);
+		if (game->map[game->map_rows - 1][i] != WALL)
+			return (FALSE);
 		i++;
 	}
-	return (true);
+	return (TRUE);
 }
 
 // Ensure that the first and last rows consist of 1s
@@ -60,21 +60,20 @@ static int	check_top_bot_walls(t_game *game, int height)
 static int	check_walls(t_game *game)
 {
 	int	i;
-	int	height;
 
 	if (!game->map)
 		return (FALSE);
-	height = 0;
-	while (game->map[height])
-		height++;
+	// height = 0;
+	// while (game->map[height])
+	// 	height++;
 	i = 0;
-	while (game->map[0][i])
+	while (i < game->map_rows)
 	{
-		if (game->map[0][i] != WALL)
+		if (game->map[i][0] != WALL || game->map[i][game->map_cols - 1] != WALL)
 			return (FALSE);
 		i++;
 	}
-	if (check_top_bot_walls(game, height) == FALSE)
+	if (check_top_bot_walls(game) == FALSE)
 		return (FALSE);
 	return (TRUE);
 }
@@ -105,32 +104,4 @@ int	validate_map(t_game *game)
 		exit_error("Map is not solvable!");
 	}
 	return (TRUE);
-}
-
-// Set the player's starting position
-void	set_player_start(t_game *game)
-{
-	int	row;
-	int	col;
-
-	if (!game->map)
-		exit_error("No map found");
-	row = 0;
-	while (game->map[row])
-	{
-		col = 0;
-		while (game->map[row][col])
-		{
-			if (game->map[row][col] == 'P')
-			{
-				game->player.x = col;
-				game->player.y = row;
-				return ;
-			}
-			col++;
-		}
-		row++;
-	}
-	free_game(game);
-	exit_error("No player start ('P') found in map");
 }
