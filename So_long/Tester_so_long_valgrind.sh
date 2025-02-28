@@ -22,14 +22,14 @@ check_error_map() {
     local map_file="$1"
     local EXPECTED_OUTPUT="$2"
 
-    # Run Valgrind and capture its output
+    # Run Valgrind and capture its output, then filter out warnings.
     VALGRIND_OUT=$(valgrind --suppressions=suppressions.supp --show-leak-kinds=all \
         --leak-check=full --error-exitcode=1 -- ./so_long "$map_file" 2>&1)
-    if echo "$VALGRIND_OUT" | grep -q "All heap blocks were freed"; then
-        printf "${GREEN}$C.[MOK]${DEF_COLOR}"
-    else
-        printf "${RED}$C.[MKO] LEAKS ${DEF_COLOR}"
-    fi
+	if echo "$VALGRIND_OUT" | tr '\n' ' ' | grep -qi "all heap blocks were freed -- no leaks are possible"; then
+    	printf "${GREEN}$C.[MOK]${DEF_COLOR}"
+	else
+    	printf "${RED}$C.[MKO] LEAKS ${DEF_COLOR}"
+	fi
 
     valgrind --suppressions=suppressions.supp --show-leak-kinds=all --leak-check=full \
         --error-exitcode=1 -- ./so_long "$map_file" > test_check.txt
@@ -72,19 +72,22 @@ check_error_map() {
 check_valid_map() {
     local map_file="$1"
 
-    VALGRIND_OUT=$(valgrind --suppressions=suppressions.supp --show-leak-kinds=all \
-        --leak-check=full --error-exitcode=1 -- ./so_long "$map_file" 2>&1)
-    if echo "$VALGRIND_OUT" | grep -q "All heap blocks were freed"; then
-        printf "${GREEN}$C.[MOK]${DEF_COLOR}\n"
+    VALGRIND_OUT=$(timeout 1s valgrind --suppressions=suppressions.supp \
+        --show-leak-kinds=all --leak-check=full --error-exitcode=1 -- ./so_long "$map_file" 2>&1)
+    CLEAN_OUT=$(echo "$VALGRIND_OUT" | sed '/Process terminating with default action of signal/d' | tr '\n' ' ')
+    if echo "$CLEAN_OUT" | grep -qi "All heap blocks were freed"; then
+         printf "${GREEN}$C.[MOK]${DEF_COLOR}\n"
     else
-        printf "${RED}$C.[MKO] LEAKS ${DEF_COLOR}\n"
+         printf "${RED}$C.[MKO] LEAKS ${DEF_COLOR}\n"
     fi
-
+	    
     valgrind --suppressions=suppressions.supp --show-leak-kinds=all --leak-check=full \
         --error-exitcode=1 -- ./so_long "$map_file" &
+
     PID=$!
     sleep 0.35
     ps $PID > /dev/null
+
     CHECK_ERROR=$?
     if [ $CHECK_ERROR == 0 ]; then
         kill $PID > /dev/null 2>&1
@@ -233,7 +236,7 @@ check_valid_map "maps_valid/ok3.ber"         # Test 59
 check_valid_map "maps_valid/ok4.ber"         # Test 60
 check_valid_map "maps_valid/ok5.ber"         # Test 61
 check_valid_map "maps_valid/ok6.ber"         # Test 62
-check_valid_map "maps_valid/ok7orok.ber"     # Test 63
+check_valid_map "maps_valid/ok7.ber"         # Test 63
 check_valid_map "maps_valid/ok8.ber"         # Test 64
 check_valid_map "maps_valid/ok9.ber"         # Test 65
 check_valid_map "maps_valid/ok10.ber"        # Test 66
