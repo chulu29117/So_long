@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:21:26 by clu               #+#    #+#             */
-/*   Updated: 2025/02/26 17:18:58 by clu              ###   ########.fr       */
+/*   Updated: 2025/03/02 14:19:00 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,27 @@ static void	player_pos(t_game *game, int new_x, int new_y)
 		new_x * TILE_SIZE, new_y * TILE_SIZE);
 	show_move_count(game);
 }
+
+// // Move the player on the map
+// static void	player_pos(t_game *game, int new_x, int new_y)
+// {
+// 	int	old_x;
+// 	int	old_y;
+
+// 	old_x = game->player.x;
+// 	old_y = game->player.y;
+// 	mlx_image_to_window(game->mlx, game->img->floor,
+// 		old_x * TILE_SIZE, old_y * TILE_SIZE);
+// 	game->player.x = new_x;
+// 	game->player.y = new_y;
+// 	game->move_count++;
+// 	ft_printf("Moves: %i\n", game->move_count);
+// 	//mlx_image_to_window(game->mlx, game->img->player,
+// 	//	new_x * TILE_SIZE, new_y * TILE_SIZE);
+// 	game->img->player->instances[0].x = new_x * TILE_SIZE;
+// 	game->img->player->instances[0].y = new_y * TILE_SIZE;
+// 	show_move_count(game);
+// }
 
 // Check if the player can move to the new position
 // If the new position is a wall or outside the map, return false
