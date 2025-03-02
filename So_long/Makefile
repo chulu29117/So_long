@@ -6,7 +6,7 @@
 #    By: clu <clu@student.hive.fi>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/11 22:37:50 by clu               #+#    #+#              #
-#    Updated: 2025/02/24 14:50:59 by clu              ###   ########.fr        #
+#    Updated: 2025/03/02 15:03:02 by clu              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,8 +30,10 @@ LIBS	:= $(LIBFT) $(LIBMLX) -ldl -lglfw -pthread -lm
 
 # Include directories
 HEADERS = -I./include -I$(LIBFT_DIR)/include -I$(MLX_DIR)/include/MLX42
+HEADERS_DEP := include/so_long.h
 
 # Source files and object files
+# shell runs the command inside it and returns the output
 SRC = $(shell find $(SRC_DIR) -type f -name "*.c")
 OBJ = $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
@@ -45,7 +47,7 @@ $(NAME): $(OBJ)
 	@echo "Done"
 
 # Compile the object files
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADERS_DEP)
 	@mkdir -p $(dir $@)
 	@echo "Compiling $<..."
 	$(CC) $(CFLAGS) $(HEADERS) -c $< -o $@

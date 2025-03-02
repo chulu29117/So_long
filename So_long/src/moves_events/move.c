@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:21:26 by clu               #+#    #+#             */
-/*   Updated: 2025/03/02 14:19:00 by clu              ###   ########.fr       */
+/*   Updated: 2025/03/02 14:50:41 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,9 @@ static void	show_move_count(t_game *game)
 		free(moves);
 		exit_error("Failed to allocate memory to show move count");
 	}
-	mlx_put_string(game->mlx, show_moves, 10, 10);
+	if (game->move_text)
+		game->move_text->enabled = FALSE;
+	game->move_text = mlx_put_string(game->mlx, show_moves, 10, 10);
 	free(moves);
 	free(show_moves);
 }
@@ -56,54 +58,27 @@ void	count_collect(t_game *game)
 	game->total_collected = count;
 }
 
-// Move the player on the map
+// // Move the player on the map
 static void	player_pos(t_game *game, int new_x, int new_y)
 {
-	int	old_x;
-	int	old_y;
-
-	old_x = game->player.x;
-	old_y = game->player.y;
-	mlx_image_to_window(game->mlx, game->img->floor,
-		old_x * TILE_SIZE, old_y * TILE_SIZE);
 	game->player.x = new_x;
 	game->player.y = new_y;
 	game->move_count++;
 	ft_printf("Moves: %i\n", game->move_count);
-	mlx_image_to_window(game->mlx, game->img->player,
-		new_x * TILE_SIZE, new_y * TILE_SIZE);
+	game->img->player->instances[0].x = new_x * TILE_SIZE;
+	game->img->player->instances[0].y = new_y * TILE_SIZE;
 	show_move_count(game);
 }
-
-// // Move the player on the map
-// static void	player_pos(t_game *game, int new_x, int new_y)
-// {
-// 	int	old_x;
-// 	int	old_y;
-
-// 	old_x = game->player.x;
-// 	old_y = game->player.y;
-// 	mlx_image_to_window(game->mlx, game->img->floor,
-// 		old_x * TILE_SIZE, old_y * TILE_SIZE);
-// 	game->player.x = new_x;
-// 	game->player.y = new_y;
-// 	game->move_count++;
-// 	ft_printf("Moves: %i\n", game->move_count);
-// 	//mlx_image_to_window(game->mlx, game->img->player,
-// 	//	new_x * TILE_SIZE, new_y * TILE_SIZE);
-// 	game->img->player->instances[0].x = new_x * TILE_SIZE;
-// 	game->img->player->instances[0].y = new_y * TILE_SIZE;
-// 	show_move_count(game);
-// }
 
 // Check if the player can move to the new position
 // If the new position is a wall or outside the map, return false
 // If the new position is a collectible, increment the collected count
 static int	check_move(t_game *game, int new_x, int new_y)
 {
-	int	max_x;
-	int	max_y;
-	int	row;
+	int		max_x;
+	int		max_y;
+	int		row;
+	size_t	i;
 
 	max_x = ft_strlen(game->map[0]);
 	max_y = 0;
@@ -124,6 +99,17 @@ static int	check_move(t_game *game, int new_x, int new_y)
 		ft_printf("Pikachu caught: %d, %d to go!\n", game->collected,
 			game->total_collected - game->collected);
 		game->map[new_y][new_x] = FLOOR;
+		i = 0;
+		while (i < game->img->collectible->count)
+		{
+			if (game->img->collectible->instances[i].x == new_x * TILE_SIZE &&
+				game->img->collectible->instances[i].y == new_y * TILE_SIZE)
+			{
+				game->img->collectible->instances[i].enabled = FALSE;
+				break ;
+			}
+			i++;
+		}
 	}
 	return (TRUE);
 }
