@@ -6,14 +6,46 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:32:50 by clu               #+#    #+#             */
-/*   Updated: 2025/02/19 14:27:38 by clu              ###   ########.fr       */
+/*   Updated: 2025/03/03 12:13:18 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
+// Draw the map
+	// Draw the floor, walls, and exit
+	// Draw the collectibles to complete the map
+void	draw_map(t_game *game, t_images *img)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (game->map[y])
+	{
+		x = 0;
+		while (game->map[y][x])
+		{
+			mlx_image_to_window(game->mlx, img->floor,
+				x * TILE_SIZE, y * TILE_SIZE);
+			if (game->map[y][x] == WALL)
+				mlx_image_to_window(game->mlx, img->wall,
+					x * TILE_SIZE, y * TILE_SIZE);
+			if (game->map[y][x] == EXIT)
+				mlx_image_to_window(game->mlx, img->exit,
+					x * TILE_SIZE, y * TILE_SIZE);
+			if (game->map[y][x] == COLLECT)
+				mlx_image_to_window(game->mlx, img->collectible,
+					x * TILE_SIZE, y * TILE_SIZE);
+			x++;
+		}
+		y++;
+	}
+}
+
 // Load the textures
-// Allocate memory for the textures
+	// Allocate memory for the textures
+	// Load the textures from the png files
 void	get_textures(t_game *game)
 {
 	game->tex = ft_calloc(1, sizeof(t_textures));
@@ -35,6 +67,9 @@ void	get_textures(t_game *game)
 	}
 }
 
+// Load the images
+	// Allocate memory for the images
+	// Convert the textures to images
 void	get_images(t_game *game)
 {
 	game->img = ft_calloc(1, sizeof(t_images));
@@ -60,50 +95,4 @@ void	get_images(t_game *game)
 	mlx_delete_texture(game->tex->collectible);
 	mlx_delete_texture(game->tex->player);
 	mlx_delete_texture(game->tex->exit);
-}
-
-static void	draw_floor(t_game *game, t_images *img)
-{
-	int	x;
-	int	y;
-
-	y = 0;
-	while (game->map[y])
-	{
-		x = 0;
-		while (game->map[y][x])
-		{
-			mlx_image_to_window(game->mlx, img->floor,
-				x * TILE_SIZE, y * TILE_SIZE);
-			if (game->map[y][x] == WALL)
-				mlx_image_to_window(game->mlx, img->wall,
-					x * TILE_SIZE, y * TILE_SIZE);
-			if (game->map[y][x] == EXIT)
-				mlx_image_to_window(game->mlx, img->exit,
-					x * TILE_SIZE, y * TILE_SIZE);
-			x++;
-		}
-		y++;
-	}
-}
-
-void	draw_map(t_game *game, t_images *img)
-{
-	int	x;
-	int	y;
-
-	draw_floor(game, img);
-	y = 0;
-	while (game->map[y])
-	{
-		x = 0;
-		while (game->map[y][x])
-		{
-			if (game->map[y][x] == COLLECT)
-				mlx_image_to_window(game->mlx, img->collectible,
-					x * TILE_SIZE, y * TILE_SIZE);
-			x++;
-		}
-		y++;
-	}
 }

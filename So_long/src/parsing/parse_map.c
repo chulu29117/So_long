@@ -6,24 +6,41 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:21:13 by clu               #+#    #+#             */
-/*   Updated: 2025/02/27 17:36:59 by clu              ###   ########.fr       */
+/*   Updated: 2025/03/03 12:16:51 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-// Getting the size of the map by counting the number of rows and columns.
-void	size_map(t_game *game, char **map)
-{
-	int	i;
+static void	process_lines(char **content, char *line, int fd);
+static char	*read_file(char *file);
 
-	i = 0;
-	while (map[i])
-		i++;
-	game->map_cols = ft_strlen(map[0]);
-	game->map_rows = i;
-	game->map_width = ft_strlen(map[0]) * TILE_SIZE;
-	game->map_height = i * TILE_SIZE;
+// Reads the map from the given file and fills the game->map structure.
+	// The map is stored as a NULL-terminated array of strings.
+void	parse_map(char *file, t_game *game)
+{
+	char	*file_content;
+	char	**map;
+
+	file_content = read_file(file);
+	if (!file_content || !file_content[0])
+	{
+		free(file_content);
+		free_parsing(game, file, "Empty map file");
+	}
+	if (ft_strnstr(file_content, "\n\n", ft_strlen(file_content)))
+	{
+		free(file_content);
+		free_parsing(game, file, "Empty line in the map");
+	}
+	map = ft_split(file_content, '\n');
+	if (!map)
+	{
+		free(file_content);
+		free_parsing(game, file, "Failed to allocate memory for map");
+	}
+	free(file_content);
+	game->map = map;
 }
 
 // Process the lines of the file content.
@@ -75,32 +92,20 @@ static char	*read_file(char *file)
 	return (content);
 }
 
-// Reads the map from the given file and fills the game->map structure.
-	// The map is stored as a NULL-terminated array of strings.
-void	parse_map(char *file, t_game *game)
+// Getting the size of the map by counting the number of rows and columns.
+	// The map width is the number of columns multiplied by the tile size.
+	// The map height is the number of rows multiplied by the tile size.
+void	size_map(t_game *game, char **map)
 {
-	char	*file_content;
-	char	**map;
+	int	i;
 
-	file_content = read_file(file);
-	if (!file_content || !file_content[0])
-	{
-		free(file_content);
-		free_parsing(game, file, "Empty map file");
-	}
-	if (ft_strnstr(file_content, "\n\n", ft_strlen(file_content)))
-	{
-		free(file_content);
-		free_parsing(game, file, "Empty line in the map");
-	}
-	map = ft_split(file_content, '\n');
-	if (!map)
-	{
-		free(file_content);
-		free_parsing(game, file, "Failed to allocate memory for map");
-	}
-	free(file_content);
-	game->map = map;
+	i = 0;
+	while (map[i])
+		i++;
+	game->map_cols = ft_strlen(map[0]);
+	game->map_rows = i;
+	game->map_width = ft_strlen(map[0]) * TILE_SIZE;
+	game->map_height = i * TILE_SIZE;
 }
 
 // Set the player's starting position
