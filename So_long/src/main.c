@@ -6,14 +6,13 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 22:39:27 by clu               #+#    #+#             */
-/*   Updated: 2025/03/03 12:18:04 by clu              ###   ########.fr       */
+/*   Updated: 2025/03/03 14:36:40 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-static int	is_valid_filename(const char *file);
-static char	*get_map_path(char *arg);
+static int	is_valid_filename(char *file);
 static int	init_game(t_game *game);
 static int	start_game(t_game *game, char *map_path);
 
@@ -23,90 +22,60 @@ static int	start_game(t_game *game, char *map_path);
 int	main(int argc, char **argv)
 {
 	t_game	game;
-	char	*map_path;
 
 	ft_bzero(&game, sizeof(t_game));
 	if (argc != 2)
 		exit_error("Program usage: ./so_long <map.ber>");
 	if (!is_valid_filename(argv[1]))
-		exit_error("Invalid map, must have a valid name and .ber extension");
-	map_path = get_map_path(argv[1]);
-	if (!map_path)
 	{
-		free(map_path);
-		exit_error("Failed to get map path");
+		if (access(argv[1], F_OK) == -1)
+		{
+			ft_putstr_fd("Error\nNonexistent map file: ", STDERR_FILENO);
+			ft_putendl_fd(argv[1], STDERR_FILENO);
+			exit(EXIT_FAILURE);
+		}
+		exit_error("Invalid map: must have a valid name and .ber extension");
 	}
-	if (!start_game(&game, map_path))
+	if (!start_game(&game, argv[1]))
 	{
-		free(map_path);
 		free_game(&game);
 		exit_error("Failed to start game");
 	}
-	free(map_path);
 	return (EXIT_SUCCESS);
 }
 
 // Check if the file is a valid .ber file with valid filename.
-static int	is_valid_filename(const char *file)
+static int	is_valid_filename(char *map_file)
 {
 	const char	*ext;
+	size_t		file_len;
+	size_t		ext_len;
 
 	ext = ".ber";
-	if (!file || ft_strlen(file) <= ft_strlen(ext))
+	file_len = ft_strlen(map_file);
+	ext_len = ft_strlen(ext);
+	if (!map_file || file_len <= ext_len)
 		return (FALSE);
-	if (ft_strcmp(file + ft_strlen(file) - ft_strlen(ext), ext) != 0)
-		return (FALSE);
-	if (ft_strlen(file) == ft_strlen(ext))
-		return (FALSE);
-	if (file[ft_strlen(file) - ft_strlen(ext) - 1] == '/')
+	if (ft_strcmp(map_file + file_len - ext_len, ext) != 0)
 		return (FALSE);
 	return (TRUE);
-}
-
-// Get the path of the map file
-	// If the map file is in the maps directory, return the path
-	// Otherwise, return the path with the maps directory prepended
-static char	*get_map_path(char *arg)
-{
-	char	*path;
-
-	if (!ft_strchr(arg, '/'))
-	{
-		path = ft_strjoin("maps/", arg);
-		if (!path)
-		{
-			free(path);
-			exit_error("Failed to allocate memory for map path");
-		}
-	}
-	else
-	{
-		path = ft_strdup(arg);
-		if (!path)
-		{
-			free(path);
-			exit_error("Failed to allocate memory for map path");
-		}
-	}
-	return (path);
 }
 
 // Start the game->Parse the map->Validate the map
 	// Check map size->Set the player start->Count the collectibles
 	// Print the number of collectibles to catch->Initialize the game
-static int	start_game(t_game *game, char *map_path)
+static int	start_game(t_game *game, char *map_file)
 {
-	parse_map(map_path, game);
+	parse_map(map_file, game);
 	count_collect(game);
 	size_map(game, game->map);
 	if (!set_player_start(game))
 	{
-		free(map_path);
+		free_game(game);
 		exit(EXIT_FAILURE);
 	}
 	if (!validate_map(game))
 	{
-		free(map_path);
 		free_game(game);
 		exit(EXIT_FAILURE);
 	}

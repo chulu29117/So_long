@@ -6,15 +6,15 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:21:31 by clu               #+#    #+#             */
-/*   Updated: 2025/02/21 10:41:36 by clu              ###   ########.fr       */
+/*   Updated: 2025/03/03 15:25:20 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
 // Hook for key events
-// Calls move_player() with the appropriate direction
-// If the game is finished, pressing ESC or ENTER closes the window
+	// Calls move_player() with the appropriate direction
+	// If the game is finished, pressing ESC or ENTER closes the window
 void	keyhook(mlx_key_data_t keydata, void *param)
 {
 	t_game		*game;

@@ -6,11 +6,39 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:32:18 by clu               #+#    #+#             */
-/*   Updated: 2025/02/27 17:38:22 by clu              ###   ########.fr       */
+/*   Updated: 2025/03/03 15:19:10 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
+
+static int	check_rectangle(t_game *game);
+static int	check_walls(t_game *game);
+static int	check_top_bot_walls(t_game *game);
+
+// Checks the map: rectangular, wall borders, and required elements. 
+	// Returns true if the map is valid; otherwise, prints an error
+int	validate_map(t_game *game)
+{
+	if (!check_rectangle(game))
+	{
+		ft_printf("Error\nInvalid map: Map is not rectangular!\n");
+		return (FALSE);
+	}
+	if (!check_walls(game))
+	{
+		ft_printf("Error\nInvalid map: Map is not closed/surrounded by wall!");
+		return (FALSE);
+	}
+	if (!check_elements(game))
+		return (FALSE);
+	if (!check_solvable(game))
+	{
+		ft_printf("Error\nMap is not solvable!");
+		return (FALSE);
+	}
+	return (TRUE);
+}
 
 // Ensure that every row in the map has the same length.
 static int	check_rectangle(t_game *game)
@@ -72,30 +100,5 @@ static int	check_walls(t_game *game)
 	}
 	if (check_top_bot_walls(game) == FALSE)
 		return (FALSE);
-	return (TRUE);
-}
-
-// Checks the map for rectangularity, proper wall borders,
-// and required elements. 
-// Returns true if the map is valid; otherwise, prints an error
-int	validate_map(t_game *game)
-{
-	if (!check_rectangle(game))
-	{
-		ft_printf("Error\nInvalid map: Map is not rectangular!\n");
-		return (FALSE);
-	}
-	if (!check_walls(game))
-	{
-		ft_printf("Error\nInvalid map: Map is not closed/surrounded by wall!");
-		return (FALSE);
-	}
-	if (!check_elements(game))
-		return (FALSE);
-	if (!check_solvable(game))
-	{
-		ft_printf("Error\nMap is not solvable!");
-		return (FALSE);
-	}
 	return (TRUE);
 }

@@ -6,7 +6,7 @@
 /*   By: clu <clu@student.hive.fi>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 23:19:51 by clu               #+#    #+#             */
-/*   Updated: 2025/03/02 14:49:37 by clu              ###   ########.fr       */
+/*   Updated: 2025/03/03 15:56:18 by clu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ typedef struct s_game
 	t_player	player;
 	t_textures	*tex;
 	t_images	*img;
+	mlx_image_t	*move_text;
 	char		**map;
 	char		**map_copy;
 	int			move_count;
@@ -84,13 +85,11 @@ typedef struct s_game
 	int			finished;
 	int			exit_found;
 	int			collect_found;
-	mlx_image_t	*move_text;
 }	t_game;
 
 // Parsing map
 void	size_map(t_game *game, char **map);
 void	parse_map(char *file, t_game *game);
-int		is_valid_filename(const char *file);
 int		check_elements(t_game *game);
 int		check_solvable(t_game *game);
 int		validate_map(t_game *game);
@@ -109,7 +108,8 @@ void	keyhook(mlx_key_data_t keydata, void *param);
 // Free functions
 void	free_map(char **map);
 void	free_game(t_game *game);
-void	free_parsing(t_game *game, char *file, char *msg);
+void	free_parsing(t_game *game, char *msg);
+void	free_file(char *file, char *msg);
 
 // Error
 void	exit_error(const char *msg);
